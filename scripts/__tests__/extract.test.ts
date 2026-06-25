@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { extractTalk, mergeGraphs, addCrossYearEdges, chunkText, type TalkInput } from '../extract'
+import { extractTalk, mergeGraphs, addCrossYearEdges, chunkText, chunkCues, type TalkInput } from '../extract'
 
 const mitra: TalkInput = {
   id: 'mitra-fight-fires-2026',
@@ -44,6 +44,28 @@ describe('chunkText', () => {
   it('keeps chunks within a soft size cap', () => {
     const long = 'A sentence. '.repeat(60)
     for (const c of chunkText('t', long)) expect(c.text.length).toBeLessThanOrEqual(340)
+  })
+
+  it('chunkCues preserves a start timestamp per chunk from the covering cue', () => {
+    // ~36-char cues that cross sentence boundaries, like real auto-captions. Enough to split.
+    const cues = [
+      { ts: 0, text: 'Welcome everyone to the talk today.' },
+      { ts: 4, text: 'We will cover public cloud and how' },
+      { ts: 7, text: 'we extend Meta into the public cloud.' },
+      { ts: 11, text: 'It gives us multi-cloud optionality.' },
+      { ts: 15, text: 'It also helps with GPU capacity and' },
+      { ts: 18, text: 'fleet management across environments.' },
+      { ts: 60, text: 'Now a totally different topic: storage' },
+      { ts: 64, text: 'and how we keep exabytes of training' },
+      { ts: 68, text: 'data spread across many data centers.' },
+    ]
+    const chunks = chunkCues('talk:x', cues)
+    expect(chunks.length).toBeGreaterThan(1)
+    for (const c of chunks) expect(typeof c.ts).toBe('number')
+    expect(chunks[0].ts).toBe(0) // first chunk starts at the first cue
+    // timestamps are non-decreasing across chunks, and the last is well past the first
+    for (let i = 1; i < chunks.length; i++) expect(chunks[i].ts!).toBeGreaterThanOrEqual(chunks[i - 1].ts!)
+    expect(chunks[chunks.length - 1].ts!).toBeGreaterThan(0)
   })
 
   it('merges short filler sentences instead of emitting them alone', () => {

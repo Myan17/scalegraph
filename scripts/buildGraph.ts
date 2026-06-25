@@ -48,7 +48,12 @@ export async function build(): Promise<{ graph: Graph; chunks: Chunk[] }> {
         id: v.id, title: v.title, speakers: v.speakers ?? [], company: v.company ?? '',
         type: 'talk', description: caps.available ? `${v.title}. ${caps.text}` : v.title,
       }
-      parts.push(extractTalk(talk, year))
+      const videoId = /[?&]v=([\w-]+)/.exec(v.url)?.[1]
+      // Use ts-aware cue chunking when we have a transcript; store video info for deep-links.
+      parts.push(extractTalk(talk, year, {
+        cues: caps.available ? caps.cues : undefined,
+        meta: { videoUrl: v.url, videoId },
+      }))
     }
   }
 
