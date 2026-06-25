@@ -1,0 +1,782 @@
+{
+  "nodes": [
+    {
+      "id": "talk:welcome-2026",
+      "type": "Talk",
+      "label": "Event Welcome",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Plenary",
+        "time": "9:55",
+        "type": "session"
+      }
+    },
+    {
+      "id": "company:meta",
+      "type": "Company",
+      "label": "Meta"
+    },
+    {
+      "id": "theme:reliability",
+      "type": "Theme",
+      "label": "Reliability"
+    },
+    {
+      "id": "talk:biswas-keynote-2026",
+      "type": "Talk",
+      "label": "Keynote from Meta",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Plenary",
+        "time": "10:00",
+        "type": "keynote"
+      }
+    },
+    {
+      "id": "speaker:surupa-biswas",
+      "type": "Speaker",
+      "label": "Surupa Biswas"
+    },
+    {
+      "id": "theme:agentic-infrastructure",
+      "type": "Theme",
+      "label": "Agentic Infrastructure"
+    },
+    {
+      "id": "theme:custom-silicon-hardware",
+      "type": "Theme",
+      "label": "Custom Silicon & Hardware"
+    },
+    {
+      "id": "talk:pariag-agents-2026",
+      "type": "Talk",
+      "label": "Our Journey to Safely Unleash Agents at Meta Scale",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Plenary",
+        "time": "10:25",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:david-pariag",
+      "type": "Speaker",
+      "label": "David Pariag"
+    },
+    {
+      "id": "theme:guardrails-safety",
+      "type": "Theme",
+      "label": "Guardrails & Safety"
+    },
+    {
+      "id": "talk:duffy-agentic-gap-2026",
+      "type": "Talk",
+      "label": "The Agentic Infrastructure Gap: In-Distribution Languages Make It a Coding Problem",
+      "year": 2026,
+      "meta": {
+        "company": "Pulumi",
+        "track": "Plenary",
+        "time": "10:45",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:joe-duffy",
+      "type": "Speaker",
+      "label": "Joe Duffy"
+    },
+    {
+      "id": "company:pulumi",
+      "type": "Company",
+      "label": "Pulumi"
+    },
+    {
+      "id": "talk:extending-public-cloud-2026",
+      "type": "Talk",
+      "label": "Extending Meta to the Public Cloud",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Plenary",
+        "time": "11:05",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:dinesh-govindasamy",
+      "type": "Speaker",
+      "label": "Dinesh Govindasamy"
+    },
+    {
+      "id": "speaker:sargun-dhillon",
+      "type": "Speaker",
+      "label": "Sargun Dhillon"
+    },
+    {
+      "id": "theme:multi-cloud",
+      "type": "Theme",
+      "label": "Multi-Cloud"
+    },
+    {
+      "id": "talk:morning-qa-2026",
+      "type": "Talk",
+      "label": "Live Q&A",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Plenary",
+        "time": "11:25",
+        "type": "panel"
+      }
+    },
+    {
+      "id": "talk:mitra-fight-fires-2026",
+      "type": "Talk",
+      "label": "Teaching AI to Fight Fires: Autonomous Reliability Agents at Meta Scale",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 1",
+        "time": "13:10",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:gaurav-mitra",
+      "type": "Speaker",
+      "label": "Gaurav Mitra"
+    },
+    {
+      "id": "theme:debugging",
+      "type": "Theme",
+      "label": "Debugging"
+    },
+    {
+      "id": "metric:mitra-fight-fires-2026:1-000-incidents",
+      "type": "Metric",
+      "label": "1,000+ incidents",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:mitra-fight-fires-2026"
+      }
+    },
+    {
+      "id": "metric:mitra-fight-fires-2026:60",
+      "type": "Metric",
+      "label": "60%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:mitra-fight-fires-2026"
+      }
+    },
+    {
+      "id": "metric:mitra-fight-fires-2026:80",
+      "type": "Metric",
+      "label": "80%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:mitra-fight-fires-2026"
+      }
+    },
+    {
+      "id": "talk:nvidia-gb200-2026",
+      "type": "Talk",
+      "label": "Experience Productionizing and Operating GB200 Clusters",
+      "year": 2026,
+      "meta": {
+        "company": "NVIDIA",
+        "track": "Track 1",
+        "time": "13:45",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:ankur-srivastava",
+      "type": "Speaker",
+      "label": "Ankur Srivastava"
+    },
+    {
+      "id": "speaker:sachin-kumar-lakharia",
+      "type": "Speaker",
+      "label": "Sachin Kumar Lakharia"
+    },
+    {
+      "id": "speaker:douglas-wightman",
+      "type": "Speaker",
+      "label": "Douglas Wightman"
+    },
+    {
+      "id": "company:nvidia",
+      "type": "Company",
+      "label": "NVIDIA"
+    },
+    {
+      "id": "system:gb200-nvl72",
+      "type": "System",
+      "label": "GB200 NVL72"
+    },
+    {
+      "id": "talk:kirti-privacy-2026",
+      "type": "Talk",
+      "label": "Building Privacy Aware Infrastructure in the AI-Native Era",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 1",
+        "time": "14:15",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:rituraj-kirti",
+      "type": "Speaker",
+      "label": "Rituraj Kirti"
+    },
+    {
+      "id": "theme:evaluation",
+      "type": "Theme",
+      "label": "Evaluation"
+    },
+    {
+      "id": "talk:storage-blueprint-2026",
+      "type": "Talk",
+      "label": "AI Storage Blueprint",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 1",
+        "time": "14:50",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:sidharth-bajaj",
+      "type": "Speaker",
+      "label": "Sidharth Bajaj"
+    },
+    {
+      "id": "speaker:venkatraghavan-srinivasa",
+      "type": "Speaker",
+      "label": "Venkatraghavan Srinivasa"
+    },
+    {
+      "id": "theme:storage",
+      "type": "Theme",
+      "label": "Storage"
+    },
+    {
+      "id": "talk:afternoon-panel-2026",
+      "type": "Talk",
+      "label": "Live Panel",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 1",
+        "time": "15:15",
+        "type": "panel"
+      }
+    },
+    {
+      "id": "talk:hoose-keynote-2026",
+      "type": "Talk",
+      "label": "Keynote from Meta",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 1",
+        "time": "15:40",
+        "type": "keynote"
+      }
+    },
+    {
+      "id": "speaker:peter-hoose",
+      "type": "Speaker",
+      "label": "Peter Hoose"
+    },
+    {
+      "id": "talk:stop-the-world-2026",
+      "type": "Talk",
+      "label": "[Almost] Fail & Tell: Stop The World",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 2",
+        "time": "13:10",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:phil-lopreiato",
+      "type": "Speaker",
+      "label": "Phil Lopreiato"
+    },
+    {
+      "id": "speaker:rahul-iyengar",
+      "type": "Speaker",
+      "label": "Rahul Iyengar"
+    },
+    {
+      "id": "theme:control-plane",
+      "type": "Theme",
+      "label": "Control Plane"
+    },
+    {
+      "id": "metric:stop-the-world-2026:2025-incident",
+      "type": "Metric",
+      "label": "2025 incident",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:stop-the-world-2026"
+      }
+    },
+    {
+      "id": "talk:ms-secure-debug-2026",
+      "type": "Talk",
+      "label": "Securing Production Debugging at Hyperscale",
+      "year": 2026,
+      "meta": {
+        "company": "Microsoft",
+        "track": "Track 2",
+        "time": "13:45",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:shridivya-sharma",
+      "type": "Speaker",
+      "label": "Shridivya Sharma"
+    },
+    {
+      "id": "speaker:luke-kelly",
+      "type": "Speaker",
+      "label": "Luke Kelly"
+    },
+    {
+      "id": "company:microsoft",
+      "type": "Company",
+      "label": "Microsoft"
+    },
+    {
+      "id": "system:kubernetes",
+      "type": "System",
+      "label": "Kubernetes"
+    },
+    {
+      "id": "system:semantic-kernel",
+      "type": "System",
+      "label": "Semantic Kernel"
+    },
+    {
+      "id": "talk:liu-agentic-debug-2026",
+      "type": "Talk",
+      "label": "Taming AI Infrastructure Failures with Agentic Debugging",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "track": "Track 2",
+        "time": "14:15",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:phillip-liu",
+      "type": "Speaker",
+      "label": "Phillip Liu"
+    },
+    {
+      "id": "theme:distributed-training",
+      "type": "Theme",
+      "label": "Distributed Training"
+    },
+    {
+      "id": "system:nccl",
+      "type": "System",
+      "label": "NCCL"
+    }
+  ],
+  "edges": [
+    {
+      "source": "talk:welcome-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:welcome-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:surupa-biswas",
+      "target": "talk:biswas-keynote-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:david-pariag",
+      "target": "talk:pariag-agents-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:pariag-agents-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:pariag-agents-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:pariag-agents-2026",
+      "target": "theme:guardrails-safety",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:joe-duffy",
+      "target": "talk:duffy-agentic-gap-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:duffy-agentic-gap-2026",
+      "target": "company:pulumi",
+      "rel": "from"
+    },
+    {
+      "source": "talk:duffy-agentic-gap-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:dinesh-govindasamy",
+      "target": "talk:extending-public-cloud-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:sargun-dhillon",
+      "target": "talk:extending-public-cloud-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:david-pariag",
+      "target": "talk:morning-qa-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:sargun-dhillon",
+      "target": "talk:morning-qa-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:dinesh-govindasamy",
+      "target": "talk:morning-qa-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:joe-duffy",
+      "target": "talk:morning-qa-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:morning-qa-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:morning-qa-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:morning-qa-2026",
+      "target": "theme:guardrails-safety",
+      "rel": "about"
+    },
+    {
+      "source": "talk:morning-qa-2026",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:gaurav-mitra",
+      "target": "talk:mitra-fight-fires-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "theme:debugging",
+      "rel": "about"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "metric:mitra-fight-fires-2026:1-000-incidents",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "metric:mitra-fight-fires-2026:60",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "metric:mitra-fight-fires-2026:80",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:ankur-srivastava",
+      "target": "talk:nvidia-gb200-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:sachin-kumar-lakharia",
+      "target": "talk:nvidia-gb200-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:douglas-wightman",
+      "target": "talk:nvidia-gb200-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "company:nvidia",
+      "rel": "from"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "system:gb200-nvl72",
+      "rel": "uses"
+    },
+    {
+      "source": "speaker:rituraj-kirti",
+      "target": "talk:kirti-privacy-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:kirti-privacy-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:kirti-privacy-2026",
+      "target": "theme:guardrails-safety",
+      "rel": "about"
+    },
+    {
+      "source": "talk:kirti-privacy-2026",
+      "target": "theme:evaluation",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:sidharth-bajaj",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:venkatraghavan-srinivasa",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:storage-blueprint-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:storage-blueprint-2026",
+      "target": "theme:storage",
+      "rel": "about"
+    },
+    {
+      "source": "talk:storage-blueprint-2026",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:afternoon-panel-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:afternoon-panel-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:peter-hoose",
+      "target": "talk:hoose-keynote-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "speaker:phil-lopreiato",
+      "target": "talk:stop-the-world-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:rahul-iyengar",
+      "target": "talk:stop-the-world-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:stop-the-world-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:stop-the-world-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:stop-the-world-2026",
+      "target": "theme:control-plane",
+      "rel": "about"
+    },
+    {
+      "source": "talk:stop-the-world-2026",
+      "target": "metric:stop-the-world-2026:2025-incident",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:shridivya-sharma",
+      "target": "talk:ms-secure-debug-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:luke-kelly",
+      "target": "talk:ms-secure-debug-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "company:microsoft",
+      "rel": "from"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "theme:debugging",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "system:kubernetes",
+      "rel": "uses"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "system:semantic-kernel",
+      "rel": "uses"
+    },
+    {
+      "source": "speaker:phillip-liu",
+      "target": "talk:liu-agentic-debug-2026",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "theme:debugging",
+      "rel": "about"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "system:nccl",
+      "rel": "uses"
+    }
+  ]
+}
