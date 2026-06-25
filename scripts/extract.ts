@@ -62,23 +62,34 @@ function matchLexicon(haystack: string, lex: Record<string, string[]>): string[]
   return hits
 }
 
-/** Split a description into <=280 char chunks at sentence boundaries. */
+const TARGET = 160 // accumulate sentences up to ~this length before emitting a chunk
+const MAX = 280    // never exceed this
+const MIN = 40     // shorter trailing fragments get merged into the previous chunk
+
+/**
+ * Split text into clean, whole-sentence chunks. Short sentences are merged toward TARGET so
+ * answers don't surface filler fragments ("Let's talk about the motivation."), and a tiny
+ * trailing remainder is folded into the previous chunk rather than standing alone.
+ */
 export function chunkText(talkId: string, text: string): Chunk[] {
-  const sentences = text.match(/[^.!?]+[.!?]+/g) ?? [text]
-  const chunks: Chunk[] = []
+  const sentences = (text.match(/[^.!?]+[.!?]+/g) ?? [text]).map((s) => s.trim()).filter(Boolean)
+  const texts: string[] = []
   let buf = ''
-  let i = 0
-  const flush = () => {
-    const t = buf.trim()
-    if (t) chunks.push({ id: `${talkId}::c${i++}`, talkId, text: t })
-    buf = ''
-  }
+  const flush = () => { if (buf.trim()) texts.push(buf.trim()); buf = '' }
   for (const s of sentences) {
-    if ((buf + s).length > 280) flush()
-    buf += s
+    if (buf && (buf.length + 1 + s.length) > MAX) flush()
+    buf = buf ? `${buf} ${s}` : s
+    if (buf.length >= TARGET) flush()
   }
   flush()
-  return chunks
+  // Fold any too-short fragment into its predecessor so answers never surface filler like
+  // "Let's talk about the motivation." (may slightly exceed MAX; these are display chunks).
+  const merged: string[] = []
+  for (const t of texts) {
+    if (t.length < MIN && merged.length) merged[merged.length - 1] += ' ' + t
+    else merged.push(t)
+  }
+  return merged.map((t, i) => ({ id: `${talkId}::c${i}`, talkId, text: t }))
 }
 
 export function extractTalk(talk: TalkInput, year?: number): ExtractParts {
