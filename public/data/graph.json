@@ -403,7 +403,9 @@
       "year": 2025,
       "meta": {
         "company": "",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=SuhaYyb9AOs",
+        "videoId": "SuhaYyb9AOs"
       }
     },
     {
@@ -431,7 +433,9 @@
       "year": 2026,
       "meta": {
         "company": "Meta",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=ZyAoUSmbntI",
+        "videoId": "ZyAoUSmbntI"
       }
     },
     {
@@ -505,7 +509,9 @@
       "year": 2026,
       "meta": {
         "company": "",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=MUxbhxzIMpQ",
+        "videoId": "MUxbhxzIMpQ"
       }
     },
     {
@@ -560,7 +566,9 @@
       "year": 2026,
       "meta": {
         "company": "",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=Eps9iGyYiBM",
+        "videoId": "Eps9iGyYiBM"
       }
     },
     {
@@ -575,7 +583,9 @@
       "year": 2025,
       "meta": {
         "company": "Meta",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=NC02bplCEis",
+        "videoId": "NC02bplCEis"
       }
     },
     {
@@ -603,7 +613,9 @@
       "year": 2025,
       "meta": {
         "company": "Meta",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=AqIPRseYcTU",
+        "videoId": "AqIPRseYcTU"
       }
     },
     {
@@ -641,7 +653,9 @@
       "year": 2025,
       "meta": {
         "company": "Meta",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=XoTok_8lFXE",
+        "videoId": "XoTok_8lFXE"
       }
     },
     {
@@ -724,7 +738,9 @@
       "year": 2026,
       "meta": {
         "company": "AWS",
-        "type": "talk"
+        "type": "talk",
+        "videoUrl": "https://www.youtube.com/watch?v=Vvhe5qG8IpQ",
+        "videoId": "Vvhe5qG8IpQ"
       }
     },
     {

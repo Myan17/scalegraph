@@ -66,39 +66,90 @@ const TARGET = 160 // accumulate sentences up to ~this length before emitting a 
 const MAX = 280    // never exceed this
 const MIN = 40     // shorter trailing fragments get merged into the previous chunk
 
+export interface Cue { ts: number; text: string }
+
+interface OffsetChunk { text: string; start: number } // start = char offset in the source text
+
+/** Split into sentences with their start char offset in `text`. */
+function splitSentences(text: string): { s: string; start: number }[] {
+  const re = /[^.!?]+[.!?]+/g
+  const out: { s: string; start: number }[] = []
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    const raw = m[0]
+    const lead = raw.length - raw.trimStart().length
+    const s = raw.trim()
+    if (s) out.push({ s, start: m.index + lead })
+  }
+  if (!out.length) { const s = text.trim(); if (s) out.push({ s, start: 0 }) }
+  return out
+}
+
 /**
- * Split text into clean, whole-sentence chunks. Short sentences are merged toward TARGET so
- * answers don't surface filler fragments ("Let's talk about the motivation."), and a tiny
- * trailing remainder is folded into the previous chunk rather than standing alone.
+ * Core chunker: clean, whole-sentence chunks merged toward TARGET (so answers don't surface filler
+ * like "Let's talk about the motivation."), with each chunk's start char offset in the source.
  */
-export function chunkText(talkId: string, text: string): Chunk[] {
-  const sentences = (text.match(/[^.!?]+[.!?]+/g) ?? [text]).map((s) => s.trim()).filter(Boolean)
-  const texts: string[] = []
+function chunkWithOffsets(text: string): OffsetChunk[] {
+  const sentences = splitSentences(text)
+  const out: OffsetChunk[] = []
   let buf = ''
-  const flush = () => { if (buf.trim()) texts.push(buf.trim()); buf = '' }
-  for (const s of sentences) {
+  let start = 0
+  const flush = () => { if (buf.trim()) out.push({ text: buf.trim(), start }); buf = '' }
+  for (const { s, start: sStart } of sentences) {
     if (buf && (buf.length + 1 + s.length) > MAX) flush()
+    if (!buf) start = sStart
     buf = buf ? `${buf} ${s}` : s
     if (buf.length >= TARGET) flush()
   }
   flush()
-  // Fold any too-short fragment into its predecessor so answers never surface filler like
-  // "Let's talk about the motivation." (may slightly exceed MAX; these are display chunks).
-  const merged: string[] = []
-  for (const t of texts) {
-    if (t.length < MIN && merged.length) merged[merged.length - 1] += ' ' + t
-    else merged.push(t)
+  // Fold a too-short fragment into its predecessor (keeps the predecessor's start/ts).
+  const merged: OffsetChunk[] = []
+  for (const c of out) {
+    if (c.text.length < MIN && merged.length) merged[merged.length - 1].text += ' ' + c.text
+    else merged.push(c)
   }
-  return merged.map((t, i) => ({ id: `${talkId}::c${i}`, talkId, text: t }))
+  return merged
 }
 
-export function extractTalk(talk: TalkInput, year?: number): ExtractParts {
+/** Chunk plain text (e.g. an agenda description); chunks carry no timestamp. */
+export function chunkText(talkId: string, text: string): Chunk[] {
+  return chunkWithOffsets(text).map((c, i) => ({ id: `${talkId}::c${i}`, talkId, text: c.text }))
+}
+
+/**
+ * Chunk timestamped caption cues into the same clean chunks, assigning each chunk the start time
+ * (seconds) of the cue covering its first character — so the UI can deep-link to that moment.
+ */
+export function chunkCues(talkId: string, cues: Cue[]): Chunk[] {
+  // Reconstruct the full transcript while recording the char offset where each cue begins.
+  const marks: { char: number; ts: number }[] = []
+  let full = ''
+  for (const c of cues) {
+    const piece = c.text.trim()
+    if (!piece) continue
+    marks.push({ char: full.length ? full.length + 1 : 0, ts: c.ts })
+    full = full ? `${full} ${piece}` : piece
+  }
+  const tsAt = (char: number): number => {
+    let ts = marks[0]?.ts ?? 0
+    for (const m of marks) { if (m.char <= char) ts = m.ts; else break }
+    return ts
+  }
+  return chunkWithOffsets(full).map((c, i) => ({ id: `${talkId}::c${i}`, talkId, text: c.text, ts: tsAt(c.start) }))
+}
+
+export interface ExtractOpts {
+  cues?: Cue[]                       // timestamped transcript -> ts-aware chunks
+  meta?: Record<string, unknown>     // extra Talk-node meta (e.g. videoUrl, videoId)
+}
+
+export function extractTalk(talk: TalkInput, year?: number, opts: ExtractOpts = {}): ExtractParts {
   const nodes: GraphNode[] = []
   const edges: GraphEdge[] = []
   const hay = `${talk.title}. ${talk.description}`.toLowerCase()
 
   const talkNode = node(`talk:${talk.id}`, 'Talk', talk.title, year, {
-    company: talk.company, track: talk.track, time: talk.time, type: talk.type,
+    company: talk.company, track: talk.track, time: talk.time, type: talk.type, ...opts.meta,
   })
   nodes.push(talkNode)
 
@@ -143,7 +194,9 @@ export function extractTalk(talk: TalkInput, year?: number): ExtractParts {
     edges.push({ source: talkNode.id, target: id, rel: 'reports' })
   }
 
-  const chunks = chunkText(talkNode.id, talk.description)
+  const chunks = opts.cues?.length
+    ? chunkCues(talkNode.id, opts.cues)
+    : chunkText(talkNode.id, talk.description)
   return { nodes, edges, chunks }
 }
 
