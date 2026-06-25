@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Graph, Chunk, Answer } from './types'
 import { composeAnswer } from './lib/answer'
-import { semanticScoresFor, type EmbeddingIndex } from './lib/semantic'
+import { semanticScoresFor, warmupModel, isModelReady, type EmbeddingIndex } from './lib/semantic'
 import { ModeNav, type Mode } from './components/ModeNav'
 import { ForceGraph } from './components/ForceGraph'
 import { AskBar } from './components/AskBar'
@@ -26,6 +26,8 @@ export default function App() {
   const [highlight, setHighlight] = useState<string[]>([])
   const [embIndex, setEmbIndex] = useState<EmbeddingIndex | null>(null)
   const [embSettled, setEmbSettled] = useState(false)
+  const [modelLoading, setModelLoading] = useState(false)
+  const [modelReady, setModelReady] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -40,6 +42,14 @@ export default function App() {
       .then((idx) => { setEmbIndex(idx); setEmbSettled(true) })
       .catch(() => { setEmbSettled(true) /* no embeddings -> graceful lexical fallback */ })
   }, [])
+
+  // Warm the semantic model when the user enters Ask mode (so the ~30MB first-load happens
+  // up front with a visible indicator, not as a mysterious hang on their first question).
+  useEffect(() => {
+    if (mode !== 'ask' || !embIndex || modelReady || modelLoading) return
+    setModelLoading(true)
+    warmupModel().then(() => { setModelReady(isModelReady()); setModelLoading(false) })
+  }, [mode, embIndex, modelReady, modelLoading])
 
   // Shareable question links: ?q=... auto-asks once data AND the embeddings load has settled
   // (so it ranks semantically, not by whichever loads first).
@@ -82,6 +92,13 @@ export default function App() {
           <div className="split">
             <div>
               <AskBar onAsk={ask} busy={busy} />
+              {modelLoading && !modelReady && (
+                <div className="card muted" style={{ marginBottom: 18, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span className="dot" style={{ animation: 'pulse 1.2s infinite' }} />
+                  Loading semantic search — first visit downloads the model (~30 MB), then it’s cached.
+                  You can still ask; results sharpen once it’s ready.
+                </div>
+              )}
               {answer && <AnswerView answer={answer} graph={graph} onCite={(id) => setHighlight([id])} />}
             </div>
             <div className="card">
