@@ -1,10 +1,10 @@
-// Answer composer: retrieval-first, extractive-by-default, grounded by construction.
-// Optional LLM synthesis may rephrase claims but never adds uncited content.
+// Answer composer: retrieval-first and FULLY EXTRACTIVE. Every claim is the speaker's actual
+// words, verbatim, cited to the source talk. No LLM, no keys, no paraphrase that could drift —
+// grounded by construction. Refuses when retrieval is too weak.
 
 import type { Answer, Claim, Citation, Graph, Chunk, GraphNode } from '../types'
 import { retrieve } from './retrieve'
 import { judge } from './judge'
-import { isEnabled, synthesize, type SynthContext } from './llm'
 
 let counter = 0
 function nextId(): string {
@@ -44,21 +44,7 @@ export async function composeAnswer(query: string, graph: Graph, chunks: Chunk[]
     return { text: s.chunk.text, citations: [citation] }
   })
 
-  let title = talkLabel(graph, top[0].chunk.talkId)
-
-  // Optional LLM synthesis: rephrase claim texts 1:1, keep the citations.
-  if (isEnabled()) {
-    const contexts: SynthContext[] = top.map((s) => ({
-      talkLabel: talkLabel(graph, s.chunk.talkId),
-      text: s.chunk.text,
-    }))
-    const synth = await synthesize(query, contexts)
-    if (synth) {
-      title = synth.title
-      synth.claimTexts.forEach((t, i) => { if (claims[i]) claims[i].text = t })
-    }
-  }
-
+  const title = talkLabel(graph, top[0].chunk.talkId)
   const relatedNodeIds = retrieval.subgraph.nodes.map((n) => n.id)
   return {
     id: nextId(),
