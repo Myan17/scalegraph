@@ -43,19 +43,33 @@ npm run build:graph     # builds public/data/{graph,chunks}.json from config/
 npm run dev             # open the printed localhost URL
 ```
 
-That's it — the demo runs **fully offline** with zero API keys. Answers are *extractive and grounded*
-by default: ScaleGraph retrieves the most relevant talks and presents their real descriptions with
-citations. No generation, no hallucination.
+That's it — **no API keys, no backend, no cost.** Answers are *fully extractive and grounded*:
+ScaleGraph retrieves the most relevant talks and shows the **speaker's actual words**, verbatim,
+each cited to its talk. No generation, no paraphrase that could drift, no hallucination — and it
+**refuses** when the corpus can't support an answer.
 
-### Optional: LLM synthesis
+### Semantic search
 
-To have answers rephrased more fluently (still grounded — the model may only rewrite cited claims,
-never add new ones), provide an Anthropic API key:
+Natural-language questions are matched by **meaning**, not just keywords, so paraphrases work
+("how do they keep the site up during a failure?" → the regional-outage talk). This runs a small
+embedding model (`all-MiniLM-L6-v2`) **in your browser** — the model and its onnxruntime WASM are
+**self-hosted** (under `public/models` and `public/*.wasm`), so there's no external CDN dependency.
+First use downloads ~30 MB once, then it's cached. Chunk embeddings are precomputed and committed
+(`public/data/embeddings.json`); if the model fails to load, search degrades gracefully to lexical.
+
+To regenerate embeddings after changing the corpus:
 
 ```bash
-echo "VITE_ANTHROPIC_API_KEY=sk-ant-..." > .env.local
-npm run dev
+npm run build:graph        # rebuild chunks
+npm run build:embeddings   # re-embed (Node; see note below)
 ```
+
+> Note: `build:embeddings` imports transformers.js in Node, which pulls `sharp` (image-only,
+> unused here). If `sharp`'s native binary won't install in your environment, the committed
+> `embeddings.json` already ships — you only need to regenerate if you change the talks.
+
+Measured retrieval quality (see `scripts/eval.ts`): lexical-only **57%** → hybrid **86%**
+precision@1, with off-topic queries correctly refused.
 
 ## Add your conference
 
