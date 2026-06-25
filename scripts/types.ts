@@ -48,11 +48,29 @@ export interface Claim {
   citations: Citation[]
 }
 
+export interface Segment {
+  text: string
+  startTs?: number
+  score: number
+}
+
+export interface TalkThread {
+  talkId: string
+  label: string
+  year?: number
+  videoUrl?: string
+  videoId?: string
+  segments: Segment[]
+  score: number
+}
+
 export interface Answer {
   id: string
   query: string
   title: string
   claims: Claim[]
+  /** Comprehensive view: the speaker's contiguous segments grouped by talk (preferred by the UI). */
+  groups?: TalkThread[]
   relatedNodeIds: string[]
   groundedness: number
   refused: boolean

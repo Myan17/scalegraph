@@ -6,35 +6,20 @@
 // relevant chunks and GROW outward to adjacent chunks while they stay semantically on-topic — even
 // where the keyword never reappears — and stop when the speaker moves on.
 
-import type { Graph, Chunk, GraphNode } from '../types'
+import type { Graph, Chunk, GraphNode, Segment, TalkThread } from '../types'
 import { scoreChunks, type ScoredItem } from './retrieve'
-
-export interface Segment {
-  text: string
-  startTs?: number
-  score: number
-}
-
-export interface TalkThread {
-  talkId: string
-  label: string
-  year?: number
-  videoUrl?: string
-  videoId?: string
-  segments: Segment[]
-  score: number // talk-level relevance (sum of seed scores × type weight)
-}
 
 export interface SegmentResult {
   groups: TalkThread[]
   confidence: number
 }
 
-// Hysteresis thresholds on the per-chunk score (blended sem+lex × type weight). Measured semantic
-// separation: on-topic cosine ≥0.40, off-topic ≤0.25 — so a seed is a clear hit and grow keeps
-// contiguous context that's still related.
-const SEED_HI = 0.30
-const GROW_LO = 0.18
+// Hysteresis thresholds on the raw semantic COSINE (measured separation: on-topic ≥0.40,
+// off-topic ≤0.25). SEED = a chunk clearly about the topic; GROW = extend contiguously while still
+// related, then stop (so a segment doesn't swallow the off-topic intro). Using cosine directly
+// keeps these interpretable and prevents long transcripts from inflating via normalized scores.
+const SEED_SEM = 0.40
+const GROW_SEM = 0.28
 const MAX_SEGMENTS_PER_TALK = 4
 
 /** Order chunks within a talk by their transcript position (id suffix ::c<n>). */
@@ -65,8 +50,12 @@ export function buildSegments(
 
   const groups: TalkThread[] = []
   for (const [talkId, arr] of byTalk) {
+    const node = nodeFor(graph, talkId)
+    const ttype = node?.meta?.type as string | undefined
+    if (ttype === 'session' || ttype === 'panel') continue // navigational, not a real "thread"
+
     arr.sort((a, b) => chunkIndex(a.chunk) - chunkIndex(b.chunk))
-    const seeds = arr.filter((i) => i.score >= SEED_HI)
+    const seeds = arr.filter((i) => i.sem >= SEED_SEM)
     if (!seeds.length) continue // talk doesn't meaningfully discuss the topic
 
     // Region-grow each seed outward while neighbors stay on-topic; merge overlapping ranges.
@@ -77,8 +66,8 @@ export function buildSegments(
       const k = idxOf.get(seed.chunk.id)!
       if (covered.has(k)) continue
       let lo = k, hi = k
-      while (lo - 1 >= 0 && arr[lo - 1].sem >= GROW_LO) lo--
-      while (hi + 1 < arr.length && arr[hi + 1].sem >= GROW_LO) hi++
+      while (lo - 1 >= 0 && arr[lo - 1].sem >= GROW_SEM) lo--
+      while (hi + 1 < arr.length && arr[hi + 1].sem >= GROW_SEM) hi++
       for (let j = lo; j <= hi; j++) covered.add(j)
       ranges.push([lo, hi])
     }
@@ -101,8 +90,11 @@ export function buildSegments(
     })
     segments.sort((a, b) => b.score - a.score)
 
-    const node = nodeFor(graph, talkId)
-    const seedScore = seeds.reduce((sum, s) => sum + s.score, 0)
+    // Rank by PEAK relevance (most on-topic moment) × talk-type weight, with a small bonus for
+    // sustained discussion — so the talk actually about the topic leads, not whichever has the most
+    // chunks, and keynotes are gently demoted vs focused talks.
+    const peak = Math.max(...seeds.map((s) => s.sem))
+    const score = peak * (seeds[0].tw ?? 1) + Math.min(0.1, 0.01 * seeds.length)
     groups.push({
       talkId,
       label: node?.label ?? talkId,
@@ -110,7 +102,7 @@ export function buildSegments(
       videoUrl: node?.meta?.videoUrl as string | undefined,
       videoId: node?.meta?.videoId as string | undefined,
       segments: segments.slice(0, MAX_SEGMENTS_PER_TALK),
-      score: seedScore,
+      score,
     })
   }
 
