@@ -5,6 +5,7 @@
 import type { Answer, Claim, Citation, Graph, Chunk, GraphNode } from '../types'
 import { retrieve } from './retrieve'
 import { judge } from './judge'
+import { buildSegments } from './segments'
 
 let counter = 0
 function nextId(): string {
@@ -38,24 +39,33 @@ export async function composeAnswer(
     }
   }
 
-  // Extractive claims: one per top chunk, each cited to its source talk.
-  const top = retrieval.rankedChunks.slice(0, 4)
-  const claims: Claim[] = top.map((s) => {
-    const citation: Citation = {
-      talkId: s.chunk.talkId,
-      label: talkLabel(graph, s.chunk.talkId),
-      ts: s.chunk.ts,
-    }
-    return { text: s.chunk.text, citations: [citation] }
-  })
+  // Comprehensive view: the speaker's contiguous segments grouped by talk.
+  const { groups } = buildSegments(query, graph, chunks, semantic)
 
-  const title = talkLabel(graph, top[0].chunk.talkId)
+  // Derived flat claims (one per top segment) keep slideModel / validateAnswer / graph highlight
+  // working off a single grounded structure.
+  const claims: Claim[] = groups.flatMap((g) =>
+    g.segments.slice(0, 1).map((seg): Claim => ({
+      text: seg.text,
+      citations: [{ talkId: g.talkId, label: g.label, ts: seg.startTs } as Citation],
+    })),
+  )
+
+  // Fallback: if region-growing produced no segments (rare), fall back to the lone top chunk so we
+  // never show an empty non-refused answer.
+  if (claims.length === 0) {
+    const s = retrieval.rankedChunks[0]
+    claims.push({ text: s.chunk.text, citations: [{ talkId: s.chunk.talkId, label: talkLabel(graph, s.chunk.talkId), ts: s.chunk.ts }] })
+  }
+
+  const title = groups[0]?.label ?? talkLabel(graph, retrieval.rankedChunks[0].chunk.talkId)
   const relatedNodeIds = retrieval.subgraph.nodes.map((n) => n.id)
   return {
     id: nextId(),
     query,
     title,
     claims,
+    groups,
     relatedNodeIds,
     groundedness: verdict.groundedness,
     refused: false,
