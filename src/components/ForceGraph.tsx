@@ -31,8 +31,14 @@ export function ForceGraph({
 
   const { nodes, links } = useMemo(() => {
     const map = new Map<string, SimNode>()
+    const N = graph.nodes.length
+    // Phyllotaxis spread so nodes don't all start stacked at the center.
+    const golden = Math.PI * (3 - Math.sqrt(5))
+    const spread = Math.min(width, height) * 0.46
     graph.nodes.forEach((n, i) => {
-      map.set(n.id, { ...n, x: width / 2 + Math.cos(i) * 40, y: height / 2 + Math.sin(i) * 40 })
+      const r = spread * Math.sqrt((i + 0.5) / N)
+      const a = i * golden
+      map.set(n.id, { ...n, x: width / 2 + Math.cos(a) * r, y: height / 2 + Math.sin(a) * r })
     })
     const links: SimLink[] = graph.edges
       .filter((e) => map.has(e.source) && map.has(e.target))
@@ -42,10 +48,10 @@ export function ForceGraph({
 
   useEffect(() => {
     const sim = forceSimulation<SimNode>(nodes)
-      .force('link', forceLink<SimNode, SimLink>(links).id((d) => d.id).distance(60).strength(0.4))
-      .force('charge', forceManyBody().strength(-180))
-      .force('center', forceCenter(width / 2, height / 2))
-      .force('collide', forceCollide<SimNode>().radius((d) => (RADIUS[d.type] ?? 5) + 6))
+      .force('link', forceLink<SimNode, SimLink>(links).id((d) => d.id).distance(72).strength(0.5))
+      .force('charge', forceManyBody().strength(-420).distanceMax(420))
+      .force('center', forceCenter(width / 2, height / 2).strength(0.06))
+      .force('collide', forceCollide<SimNode>().radius((d) => (RADIUS[d.type] ?? 5) + 14))
       .on('tick', () => force((t) => t + 1))
     simRef.current = sim
     return () => { sim.stop() }
