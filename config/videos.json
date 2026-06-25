@@ -1,0 +1,59 @@
+[
+  {
+    "id": "reliability-llm-training-observability",
+    "title": "Enhancing Runtime Reliability in LLM Training via Fine-Grained Observability",
+    "speakers": [],
+    "company": "",
+    "year": 2025,
+    "url": "https://www.youtube.com/watch?v=SuhaYyb9AOs"
+  },
+  {
+    "id": "ai-training-storage-data-normalization",
+    "title": "How Meta Scaled AI Training Storage via Data Normalization",
+    "speakers": ["Sarang Masti", "Weiran Liu"],
+    "company": "Meta",
+    "url": "https://www.youtube.com/watch?v=ZyAoUSmbntI"
+  },
+  {
+    "id": "autonomous-agents-google-tpus",
+    "title": "Architecting Infrastructure for the AI Native Future: Scaling Autonomous Agents on Google TPUs",
+    "speakers": [],
+    "company": "",
+    "url": "https://www.youtube.com/watch?v=MUxbhxzIMpQ"
+  },
+  {
+    "id": "security-of-agents",
+    "title": "Why Have We Not Solved Security of Agents?",
+    "speakers": ["Ilia Shumailov"],
+    "company": "",
+    "url": "https://www.youtube.com/watch?v=Eps9iGyYiBM"
+  },
+  {
+    "id": "scaling-llama4-training-100k",
+    "title": "Scaling Llama4 Training to 100K",
+    "speakers": [],
+    "company": "Meta",
+    "url": "https://www.youtube.com/watch?v=NC02bplCEis"
+  },
+  {
+    "id": "meta-dc-networks-generative-ai",
+    "title": "Meta's DC Networks for Generative AI",
+    "speakers": ["Rohit Puri", "Hany Morsy"],
+    "company": "Meta",
+    "url": "https://www.youtube.com/watch?v=AqIPRseYcTU"
+  },
+  {
+    "id": "performance-optimizations-100k-scale",
+    "title": "Performance Optimizations at 100K+ Scale",
+    "speakers": ["Ashmitha Jeevaraj Shetty", "Min Si"],
+    "company": "Meta",
+    "url": "https://www.youtube.com/watch?v=XoTok_8lFXE"
+  },
+  {
+    "id": "intent-gap-agentic-systems",
+    "title": "Bridging the Intent Gap in Agentic Systems",
+    "speakers": ["Anoop Deoras"],
+    "company": "AWS",
+    "url": "https://www.youtube.com/watch?v=Vvhe5qG8IpQ"
+  }
+]

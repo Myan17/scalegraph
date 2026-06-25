@@ -18,11 +18,6 @@
       "label": "Meta"
     },
     {
-      "id": "theme:reliability",
-      "type": "Theme",
-      "label": "Reliability"
-    },
-    {
       "id": "talk:biswas-keynote-2026",
       "type": "Talk",
       "label": "Keynote from Meta",
@@ -148,6 +143,11 @@
       "id": "speaker:gaurav-mitra",
       "type": "Speaker",
       "label": "Gaurav Mitra"
+    },
+    {
+      "id": "theme:reliability",
+      "type": "Theme",
+      "label": "Reliability"
     },
     {
       "id": "theme:debugging",
@@ -395,6 +395,356 @@
       "id": "system:nccl",
       "type": "System",
       "label": "NCCL"
+    },
+    {
+      "id": "talk:reliability-llm-training-observability",
+      "type": "Talk",
+      "label": "Enhancing Runtime Reliability in LLM Training via Fine-Grained Observability",
+      "year": 2025,
+      "meta": {
+        "company": "",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "metric:reliability-llm-training-observability:99",
+      "type": "Metric",
+      "label": "99%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:reliability-llm-training-observability"
+      }
+    },
+    {
+      "id": "metric:reliability-llm-training-observability:90",
+      "type": "Metric",
+      "label": "90%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:reliability-llm-training-observability"
+      }
+    },
+    {
+      "id": "talk:ai-training-storage-data-normalization",
+      "type": "Talk",
+      "label": "How Meta Scaled AI Training Storage via Data Normalization",
+      "year": 2026,
+      "meta": {
+        "company": "Meta",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:sarang-masti",
+      "type": "Speaker",
+      "label": "Sarang Masti"
+    },
+    {
+      "id": "speaker:weiran-liu",
+      "type": "Speaker",
+      "label": "Weiran Liu"
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:100-x",
+      "type": "Metric",
+      "label": "100 x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:10",
+      "type": "Metric",
+      "label": "10%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:100x",
+      "type": "Metric",
+      "label": "100x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:5x",
+      "type": "Metric",
+      "label": "5x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:40x",
+      "type": "Metric",
+      "label": "40x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "metric:ai-training-storage-data-normalization:10x",
+      "type": "Metric",
+      "label": "10x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:ai-training-storage-data-normalization"
+      }
+    },
+    {
+      "id": "talk:autonomous-agents-google-tpus",
+      "type": "Talk",
+      "label": "Architecting Infrastructure for the AI Native Future: Scaling Autonomous Agents on Google TPUs",
+      "year": 2026,
+      "meta": {
+        "company": "",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "metric:autonomous-agents-google-tpus:30",
+      "type": "Metric",
+      "label": "30%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:autonomous-agents-google-tpus"
+      }
+    },
+    {
+      "id": "metric:autonomous-agents-google-tpus:40",
+      "type": "Metric",
+      "label": "40%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:autonomous-agents-google-tpus"
+      }
+    },
+    {
+      "id": "metric:autonomous-agents-google-tpus:5x",
+      "type": "Metric",
+      "label": "5x",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:autonomous-agents-google-tpus"
+      }
+    },
+    {
+      "id": "metric:autonomous-agents-google-tpus:53",
+      "type": "Metric",
+      "label": "53%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:autonomous-agents-google-tpus"
+      }
+    },
+    {
+      "id": "metric:autonomous-agents-google-tpus:50",
+      "type": "Metric",
+      "label": "50%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:autonomous-agents-google-tpus"
+      }
+    },
+    {
+      "id": "talk:security-of-agents",
+      "type": "Talk",
+      "label": "Why Have We Not Solved Security of Agents?",
+      "year": 2026,
+      "meta": {
+        "company": "",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:ilia-shumailov",
+      "type": "Speaker",
+      "label": "Ilia Shumailov"
+    },
+    {
+      "id": "talk:scaling-llama4-training-100k",
+      "type": "Talk",
+      "label": "Scaling Llama4 Training to 100K",
+      "year": 2025,
+      "meta": {
+        "company": "Meta",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "metric:scaling-llama4-training-100k:50",
+      "type": "Metric",
+      "label": "50%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:scaling-llama4-training-100k"
+      }
+    },
+    {
+      "id": "metric:scaling-llama4-training-100k:90",
+      "type": "Metric",
+      "label": "90%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:scaling-llama4-training-100k"
+      }
+    },
+    {
+      "id": "talk:meta-dc-networks-generative-ai",
+      "type": "Talk",
+      "label": "Meta's DC Networks for Generative AI",
+      "year": 2025,
+      "meta": {
+        "company": "Meta",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:rohit-puri",
+      "type": "Speaker",
+      "label": "Rohit Puri"
+    },
+    {
+      "id": "speaker:hany-morsy",
+      "type": "Speaker",
+      "label": "Hany Morsy"
+    },
+    {
+      "id": "metric:meta-dc-networks-generative-ai:1",
+      "type": "Metric",
+      "label": "1%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:meta-dc-networks-generative-ai"
+      }
+    },
+    {
+      "id": "metric:meta-dc-networks-generative-ai:30",
+      "type": "Metric",
+      "label": "30%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:meta-dc-networks-generative-ai"
+      }
+    },
+    {
+      "id": "talk:performance-optimizations-100k-scale",
+      "type": "Talk",
+      "label": "Performance Optimizations at 100K+ Scale",
+      "year": 2025,
+      "meta": {
+        "company": "Meta",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:ashmitha-jeevaraj-shetty",
+      "type": "Speaker",
+      "label": "Ashmitha Jeevaraj Shetty"
+    },
+    {
+      "id": "speaker:min-si",
+      "type": "Speaker",
+      "label": "Min Si"
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:4x",
+      "type": "Metric",
+      "label": "4x",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:7x",
+      "type": "Metric",
+      "label": "7x",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:15x",
+      "type": "Metric",
+      "label": "15x",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:30x",
+      "type": "Metric",
+      "label": "30x",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:50",
+      "type": "Metric",
+      "label": "50%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:10",
+      "type": "Metric",
+      "label": "10%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "metric:performance-optimizations-100k-scale:15",
+      "type": "Metric",
+      "label": "15%",
+      "year": 2025,
+      "meta": {
+        "talkId": "talk:performance-optimizations-100k-scale"
+      }
+    },
+    {
+      "id": "talk:intent-gap-agentic-systems",
+      "type": "Talk",
+      "label": "Bridging the Intent Gap in Agentic Systems",
+      "year": 2026,
+      "meta": {
+        "company": "AWS",
+        "type": "talk"
+      }
+    },
+    {
+      "id": "speaker:anoop-deoras",
+      "type": "Speaker",
+      "label": "Anoop Deoras"
+    },
+    {
+      "id": "company:aws",
+      "type": "Company",
+      "label": "AWS"
+    },
+    {
+      "id": "metric:intent-gap-agentic-systems:100",
+      "type": "Metric",
+      "label": "100%",
+      "year": 2026,
+      "meta": {
+        "talkId": "talk:intent-gap-agentic-systems"
+      }
     }
   ],
   "edges": [
@@ -402,11 +752,6 @@
       "source": "talk:welcome-2026",
       "target": "company:meta",
       "rel": "from"
-    },
-    {
-      "source": "talk:welcome-2026",
-      "target": "theme:reliability",
-      "rel": "about"
     },
     {
       "source": "speaker:surupa-biswas",
@@ -512,21 +857,6 @@
       "source": "talk:morning-qa-2026",
       "target": "company:meta",
       "rel": "from"
-    },
-    {
-      "source": "talk:morning-qa-2026",
-      "target": "theme:agentic-infrastructure",
-      "rel": "about"
-    },
-    {
-      "source": "talk:morning-qa-2026",
-      "target": "theme:guardrails-safety",
-      "rel": "about"
-    },
-    {
-      "source": "talk:morning-qa-2026",
-      "target": "theme:multi-cloud",
-      "rel": "about"
     },
     {
       "source": "speaker:gaurav-mitra",
@@ -647,11 +977,6 @@
       "source": "talk:afternoon-panel-2026",
       "target": "company:meta",
       "rel": "from"
-    },
-    {
-      "source": "talk:afternoon-panel-2026",
-      "target": "theme:reliability",
-      "rel": "about"
     },
     {
       "source": "speaker:peter-hoose",
@@ -777,6 +1102,703 @@
       "source": "talk:liu-agentic-debug-2026",
       "target": "system:nccl",
       "rel": "uses"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:storage",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:debugging",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "theme:evaluation",
+      "rel": "about"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "metric:reliability-llm-training-observability:99",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "metric:reliability-llm-training-observability:90",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:sarang-masti",
+      "target": "talk:ai-training-storage-data-normalization",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:weiran-liu",
+      "target": "talk:ai-training-storage-data-normalization",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "theme:storage",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:100-x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:10",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:100x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:5x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:40x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "metric:ai-training-storage-data-normalization:10x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "theme:storage",
+      "rel": "about"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "metric:autonomous-agents-google-tpus:30",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "metric:autonomous-agents-google-tpus:40",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "metric:autonomous-agents-google-tpus:5x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "metric:autonomous-agents-google-tpus:53",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "metric:autonomous-agents-google-tpus:50",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:ilia-shumailov",
+      "target": "talk:security-of-agents",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:guardrails-safety",
+      "rel": "about"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:security-of-agents",
+      "target": "theme:evaluation",
+      "rel": "about"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "theme:control-plane",
+      "rel": "about"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "metric:scaling-llama4-training-100k:50",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "metric:scaling-llama4-training-100k:90",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:rohit-puri",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:hany-morsy",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:storage",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:debugging",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "theme:control-plane",
+      "rel": "about"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "metric:meta-dc-networks-generative-ai:1",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "metric:meta-dc-networks-generative-ai:30",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:ashmitha-jeevaraj-shetty",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "presents"
+    },
+    {
+      "source": "speaker:min-si",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "company:meta",
+      "rel": "from"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "theme:guardrails-safety",
+      "rel": "about"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "theme:distributed-training",
+      "rel": "about"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "theme:multi-cloud",
+      "rel": "about"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "theme:custom-silicon-hardware",
+      "rel": "about"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "theme:control-plane",
+      "rel": "about"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:4x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:7x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:15x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:30x",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:50",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:10",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "metric:performance-optimizations-100k-scale:15",
+      "rel": "reports"
+    },
+    {
+      "source": "speaker:anoop-deoras",
+      "target": "talk:intent-gap-agentic-systems",
+      "rel": "presents"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "company:aws",
+      "rel": "from"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "theme:agentic-infrastructure",
+      "rel": "about"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "theme:reliability",
+      "rel": "about"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "metric:intent-gap-agentic-systems:100",
+      "rel": "reports"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:biswas-keynote-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:extending-public-cloud-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:nvidia-gb200-2026",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:nvidia-gb200-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "talk:storage-blueprint-2026",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "talk:security-of-agents",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:ai-training-storage-data-normalization",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:autonomous-agents-google-tpus",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "talk:security-of-agents",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:security-of-agents",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "talk:security-of-agents",
+      "rel": "evolves",
+      "via": "theme:custom-silicon-hardware"
+    },
+    {
+      "source": "talk:pariag-agents-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:guardrails-safety"
+    },
+    {
+      "source": "talk:kirti-privacy-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:guardrails-safety"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:ms-secure-debug-2026",
+      "rel": "evolves",
+      "via": "theme:multi-cloud"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:multi-cloud"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:mitra-fight-fires-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:mitra-fight-fires-2026",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:hoose-keynote-2026",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:reliability-llm-training-observability",
+      "target": "talk:stop-the-world-2026",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:scaling-llama4-training-100k",
+      "target": "talk:stop-the-world-2026",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:meta-dc-networks-generative-ai",
+      "target": "talk:stop-the-world-2026",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:ms-secure-debug-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "talk:scaling-llama4-training-100k",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:intent-gap-agentic-systems",
+      "target": "talk:meta-dc-networks-generative-ai",
+      "rel": "evolves",
+      "via": "theme:reliability"
+    },
+    {
+      "source": "talk:kirti-privacy-2026",
+      "target": "talk:reliability-llm-training-observability",
+      "rel": "evolves",
+      "via": "theme:evaluation"
+    },
+    {
+      "source": "talk:performance-optimizations-100k-scale",
+      "target": "talk:stop-the-world-2026",
+      "rel": "evolves",
+      "via": "theme:control-plane"
+    },
+    {
+      "source": "talk:liu-agentic-debug-2026",
+      "target": "talk:performance-optimizations-100k-scale",
+      "rel": "evolves",
+      "via": "theme:distributed-training"
     }
   ]
 }

@@ -3,3 +3,5 @@ dist/
 *.local
 .DS_Store
 .vite/
+.cache/
+# captions-cache/ is intentionally committed for reproducible offline builds

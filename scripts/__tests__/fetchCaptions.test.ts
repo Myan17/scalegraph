@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { parseVtt, fetchCaptions } from '../fetchCaptions'
+import { parseVtt, fetchCaptions, yearFromUploadDate } from '../fetchCaptions'
+
+describe('yearFromUploadDate', () => {
+  it('extracts the year from a YYYYMMDD string', () => {
+    expect(yearFromUploadDate('20250819')).toBe(2025)
+  })
+  it('returns undefined for junk or empty input', () => {
+    expect(yearFromUploadDate('NA')).toBeUndefined()
+    expect(yearFromUploadDate(undefined)).toBeUndefined()
+  })
+})
 
 describe('parseVtt', () => {
   it('extracts cues with timestamps', () => {

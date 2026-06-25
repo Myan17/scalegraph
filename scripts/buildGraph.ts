@@ -4,13 +4,30 @@ import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { extractTalk, mergeGraphs, addCrossYearEdges, type TalkInput, type ExtractParts } from './extract'
-import { fetchCaptions } from './fetchCaptions'
+import { fetchCaptions, type Captions } from './fetchCaptions'
 import type { Graph, Chunk } from './types'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+// Committed cache: makes `build:graph` reproducible offline (no yt-dlp/network needed in CI).
+const cacheDir = join(root, 'captions-cache')
+
+/** Cache fetched captions on disk (keyed by video id) so rebuilds don't re-hit YouTube.
+ *  Set SCALEGRAPH_REFRESH=1 to bypass and re-fetch from source. */
+async function cachedCaptions(id: string, url: string): Promise<Captions> {
+  const file = join(cacheDir, `${id}.json`)
+  if (!process.env.SCALEGRAPH_REFRESH && existsSync(file)) {
+    return JSON.parse(await readFile(file, 'utf8')) as Captions
+  }
+  const caps = await fetchCaptions(url)
+  if (caps.available) {
+    await mkdir(cacheDir, { recursive: true })
+    await writeFile(file, JSON.stringify(caps))
+  }
+  return caps
+}
 
 interface Agenda { event: { year: number }; talks: TalkInput[] }
-interface VideoEntry { id: string; title: string; speakers?: string[]; company?: string; year: number; url: string }
+interface VideoEntry { id: string; title: string; speakers?: string[]; company?: string; year?: number; url: string }
 
 export async function build(): Promise<{ graph: Graph; chunks: Chunk[] }> {
   const agenda: Agenda = JSON.parse(await readFile(join(root, 'config/agenda.json'), 'utf8'))
@@ -21,15 +38,17 @@ export async function build(): Promise<{ graph: Graph; chunks: Chunk[] }> {
   if (existsSync(videosPath)) {
     const videos: VideoEntry[] = JSON.parse(await readFile(videosPath, 'utf8'))
     for (const v of videos) {
-      const caps = await fetchCaptions(v.url)
+      const caps = await cachedCaptions(v.id, v.url)
+      const year = caps.year ?? v.year // prefer the real source year; fall back to declared
       if (!caps.available) {
         console.warn(`[buildGraph] no captions for ${v.id} (${v.url}) — degrading to title-only node`)
       }
+      console.log(`[buildGraph] ingested ${v.id} year=${year} captions=${caps.available} (${caps.text.length} chars)`)
       const talk: TalkInput = {
         id: v.id, title: v.title, speakers: v.speakers ?? [], company: v.company ?? '',
-        type: 'talk', description: caps.available ? caps.text : v.title,
+        type: 'talk', description: caps.available ? `${v.title}. ${caps.text}` : v.title,
       }
-      parts.push(extractTalk(talk, v.year))
+      parts.push(extractTalk(talk, year))
     }
   }
 
