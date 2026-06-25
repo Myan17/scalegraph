@@ -60,17 +60,30 @@ export interface RetrieveOpts {
 const W_SEM = 0.7
 const W_LEX = 0.3
 
-export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: RetrieveOpts = {}): Retrieval {
-  const k = opts.k ?? 6
-  const semantic = opts.semantic
-  const qTerms = tokenize(query)
-  const weights = idf(chunks)
-  const qSet = new Set(qTerms)
-  const typeWeightCache = new Map<string, number>()
+/** Rich per-chunk score, shared by lone-chunk retrieval and segment region-growing. */
+export interface ScoredItem {
+  chunk: Chunk
+  score: number   // blended (sem+lexNorm) × talk-type weight — the ranking score
+  sem: number     // raw semantic cosine (0 if no semantic) — used for segment growing
+  lexNorm: number // lexical score normalized to [0,1] across the corpus
+  tw: number      // talk-type weight
+}
 
+export interface ScoreResult {
+  items: ScoredItem[]
+  matchedQueryTerms: Set<string>
+  qSize: number
+  topLexRaw: number
+}
+
+/** Score every chunk against the query (hybrid lexical+semantic). One source of truth. */
+export function scoreChunks(query: string, graph: Graph, chunks: Chunk[], semantic?: Map<string, number>): ScoreResult {
+  const weights = idf(chunks)
+  const qSet = new Set(tokenize(query))
+  const typeWeightCache = new Map<string, number>()
   const matchedQueryTerms = new Set<string>()
-  // First pass: raw lexical score per chunk (length-normalized, no type weight yet).
-  const lex: { chunk: Chunk; lexRaw: number; tw: number }[] = chunks.map((chunk) => {
+
+  const lex = chunks.map((chunk) => {
     const terms = tokenize(chunk.text)
     let score = 0
     const counted = new Set<string>()
@@ -87,17 +100,21 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: Ret
   })
 
   const maxLex = Math.max(1e-9, ...lex.map((l) => l.lexRaw))
-  const scored: ScoredChunk[] = lex.map(({ chunk, lexRaw, tw }) => {
+  const items: ScoredItem[] = lex.map(({ chunk, lexRaw, tw }) => {
     const lexNorm = lexRaw / maxLex
-    let blended: number
-    if (semantic) {
-      const sem = Math.max(0, semantic.get(chunk.id) ?? 0) // cosine, clamp negatives
-      blended = W_SEM * sem + W_LEX * lexNorm
-    } else {
-      blended = lexNorm
-    }
-    return { chunk, score: blended * tw }
+    const sem = semantic ? Math.max(0, semantic.get(chunk.id) ?? 0) : 0
+    const blended = semantic ? W_SEM * sem + W_LEX * lexNorm : lexNorm
+    return { chunk, score: blended * tw, sem, lexNorm, tw }
   })
+
+  return { items, matchedQueryTerms, qSize: qSet.size, topLexRaw: Math.max(0, ...lex.map((l) => l.lexRaw)) }
+}
+
+export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: RetrieveOpts = {}): Retrieval {
+  const k = opts.k ?? 6
+  const semantic = opts.semantic
+  const { items, matchedQueryTerms, qSize, topLexRaw } = scoreChunks(query, graph, chunks, semantic)
+  const scored: ScoredChunk[] = items.map(({ chunk, score }) => ({ chunk, score }))
 
   const rankedChunks = scored
     .filter((s) => s.score > 0.01)
@@ -117,8 +134,7 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: Ret
   // Confidence / refusal gate.
   // Lexical mode: absolute top strength × query coverage — an off-topic query that only grazes one
   // incidental word stays below the refusal threshold even if that word is locally strong.
-  const coverage = qSet.size ? matchedQueryTerms.size / qSet.size : 0
-  const topLexRaw = Math.max(0, ...lex.map((l) => l.lexRaw))
+  const coverage = qSize ? matchedQueryTerms.size / qSize : 0
   const lexConfidence = Math.min(1, topLexRaw / 2.5) * coverage
 
   let confidence = lexConfidence
@@ -128,7 +144,7 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: Ret
     // A query like "who won the world cup" grazes common words lexically but has near-zero
     // cosine, so it refuses. Lexical only RESCUES a fully-covered exact-entity query (e.g.
     // "GB200 NVL72") where every query term matched — that's a real hit even if cosine is modest.
-    const topSem = Math.max(0, ...lex.map((l) => semantic.get(l.chunk.id) ?? 0))
+    const topSem = Math.max(0, ...items.map((i) => i.sem))
     const semConfidence = Math.max(0, Math.min(1, (topSem - 0.22) / 0.35)) // cos 0.22→0, 0.57→1
     const exactRescue = coverage >= 0.99 ? lexConfidence : 0
     confidence = Math.max(semConfidence, exactRescue)
