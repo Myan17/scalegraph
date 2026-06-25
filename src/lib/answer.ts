@@ -16,8 +16,13 @@ function talkLabel(graph: Graph, talkId: string): string {
   return graph.nodes.find((n: GraphNode) => n.id === talkId)?.label ?? talkId
 }
 
-export async function composeAnswer(query: string, graph: Graph, chunks: Chunk[]): Promise<Answer> {
-  const retrieval = retrieve(query, graph, chunks)
+export async function composeAnswer(
+  query: string,
+  graph: Graph,
+  chunks: Chunk[],
+  semantic?: Map<string, number>,
+): Promise<Answer> {
+  const retrieval = retrieve(query, graph, chunks, { semantic })
   const verdict = judge(retrieval)
 
   if (verdict.refuse) {
