@@ -172,11 +172,13 @@ This is a working, deployed prototype built in a day — not a production system
 
 ### Performance — the semantic-search first-load is slow
 
-The single biggest UX problem. Natural-language search needs the embedding model in the browser, and
-**first use downloads ~31 MB** (22 MB quantized model + 9.5 MB onnxruntime WASM). Worse, **GitHub
-Pages is not a model-serving CDN** — measured throughput for the 22 MB model was **~68 KB/s, i.e.
-~5–6 minutes** to download. (On a fast CDN/connection this is seconds, but as deployed it's the
-dominant cost.) After first load the model is browser-cached and every query is ~sub-second.
+The single biggest UX problem. Natural-language search needs the embedding model in the browser, so
+**first use downloads ~33 MB** — a 23 MB quantized model (~16 MB gzipped on the wire), ~10 MB
+onnxruntime WASM, and a ~1.9 MB embeddings file. Worse, **GitHub Pages is not a model-serving CDN**:
+measured throughput in testing was only **~50–70 KB/s**, so the model alone took **~5–6 minutes** and
+the full first load is **several minutes**. (On a fast CDN/connection this is seconds — the size is
+tolerable; the GitHub Pages throttling is what makes it painful.) After first load everything is
+browser-cached and every query is ~sub-second.
 
 **How to fix the first-load bottleneck (in rough order of impact):**
 
