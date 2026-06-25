@@ -175,6 +175,8 @@ a { color: var(--accent); }
 
 .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin: 0 0 10px; }
 
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
 .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 

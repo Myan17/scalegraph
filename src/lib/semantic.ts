@@ -12,6 +12,17 @@ export interface EmbeddingIndex {
 }
 
 let extractorPromise: Promise<(text: string, opts: object) => Promise<{ data: Float32Array }>> | null = null
+let modelReady = false
+
+/** True once the embedding model has finished loading (first load is ~30MB, then cached). */
+export function isModelReady(): boolean {
+  return modelReady
+}
+
+/** Begin loading the model in the background. Safe to call repeatedly. Resolves when ready. */
+export async function warmupModel(): Promise<void> {
+  try { await getExtractor(); modelReady = true } catch { /* leave not-ready; lexical fallback */ }
+}
 
 /** Lazily load the embedding model. Heavy (~one-time ~30MB, then browser-cached) but all
  *  same-origin: the model and onnxruntime WASM are self-hosted (no external CDN dependency). */
@@ -38,6 +49,7 @@ async function getExtractor() {
 /** Embed a query into a unit-normalized vector (same space as the committed chunk vectors). */
 export async function embedQuery(text: string): Promise<number[]> {
   const extractor = await getExtractor()
+  modelReady = true
   const out = await extractor(text, { pooling: 'mean', normalize: true })
   return Array.from(out.data)
 }
