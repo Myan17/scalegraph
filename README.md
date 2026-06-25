@@ -68,8 +68,9 @@ npm run build:embeddings   # re-embed (Node; see note below)
 > unused here). If `sharp`'s native binary won't install in your environment, the committed
 > `embeddings.json` already ships — you only need to regenerate if you change the talks.
 
-Measured retrieval quality (see `scripts/eval.ts`): lexical-only **57%** → hybrid **86%**
-precision@1, with off-topic queries correctly refused.
+Semantic ranking lifts retrieval precision from **57% → 86%** (see [Accuracy](#accuracy) for the
+full picture and honest caveats). Note: the in-browser model has a heavy first-load — see
+[Known bottlenecks](#known-bottlenecks-why-this-is-a-prototype-not-a-production-system).
 
 ## Add your conference
 
@@ -123,6 +124,129 @@ question ─► retrieve (lexical + subgraph) ─► judge (groundedness) ─►
 | Answer | `src/lib/answer.ts` | extractive-by-default composer (+ optional LLM) |
 | Slides | `src/lib/slideModel.ts`, `src/lib/exportSlide.ts` | Answer → SlideSpec → PNG/PDF/.pptx |
 | UI | `src/components/*` | ForceGraph, AskBar, AnswerView, SlideView, Timeline |
+
+## Accuracy
+
+ScaleGraph has **two very different accuracy numbers**, and it's important to keep them separate.
+
+### 1. Faithfulness — effectively 100% (this is the point)
+
+Answers are **fully extractive**: every sentence shown is verbatim from the cited talk's transcript
+or description, and the system **refuses** when retrieval is too weak. It therefore *cannot fabricate*
+content — there is no generative step to hallucinate. Across all eval questions, zero made-up content
+and off-topic questions were correctly refused. This is the dimension that matters most for trust, and
+it is a structural guarantee, not a measured average.
+
+### 2. Retrieval precision — ~86% "best talk first" (measured, but small sample)
+
+Whether it surfaces the *single best* talk for a question is a search problem. Measured with
+`scripts/eval.ts` (18 hand-labeled questions, lexical-only vs hybrid lexical+semantic):
+
+| Mode | precision@1 | Refusal |
+|---|---|---|
+| Lexical only | **57%** (8/14) | 2/3 |
+| Hybrid (lexical + semantic) | **86%** (12/14) | 3/3 |
+
+In-browser spot-check (the real deployed path, driven via Chrome DevTools): **7/7** clear cases,
+**2/2** refusals.
+
+**Be honest about what this number is:** it's an **18-question hand-labeled set**, not a rigorous
+benchmark. There is no precision/recall@k, MRR, or nDCG, no human relevance panel, and the labels
+reflect one author's judgment. Treat "86%" as *indicative*, not validated. The remaining misses are
+**topically-adjacent talks, never nonsense** — e.g. a privacy question returns the storage talk
+(both about "data"), because short agenda-description talks lose to long full-transcript talks. The
+quantized embedding model also produces slightly different rankings in-browser vs Node, so close
+calls can flip between environments.
+
+### Transcript quality
+
+Past-talk transcripts come from **YouTube auto-captions**, which carry ASR errors that are NOT
+corrected (e.g. "Meta" → "MTA", "shared" → "scared"). The text is coherent and readable, but it is
+not a clean human transcript.
+
+---
+
+## Known bottlenecks (why this is a prototype, not a production system)
+
+This is a working, deployed prototype built in a day — not a production system. The honest gaps:
+
+### Performance — the semantic-search first-load is slow
+
+The single biggest UX problem. Natural-language search needs the embedding model in the browser, and
+**first use downloads ~31 MB** (22 MB quantized model + 9.5 MB onnxruntime WASM). Worse, **GitHub
+Pages is not a model-serving CDN** — measured throughput for the 22 MB model was **~68 KB/s, i.e.
+~5–6 minutes** to download. (On a fast CDN/connection this is seconds, but as deployed it's the
+dominant cost.) After first load the model is browser-cached and every query is ~sub-second.
+
+**How to fix the first-load bottleneck (in rough order of impact):**
+
+1. **Serve the model from a real CDN** (Cloudflare, jsDelivr, or HF Hub) instead of GitHub Pages —
+   the throttling, not the size, is the worst part. Easiest large win.
+2. **Server-side query embedding** — a tiny serverless function (Cloudflare Worker / Vercel) embeds
+   the query so the client downloads *nothing*. Removes the 31 MB entirely; reintroduces a backend.
+3. **Smaller embedding model** — swap `all-MiniLM-L6-v2` (22 MB) for a tinier one (`bge-micro`,
+   `gte-tiny`, `Potion/Model2Vec` static embeddings at ~a few MB) — trades some accuracy for size.
+4. **Progressive results** — show lexical results *instantly*, then silently re-rank when the model
+   finishes loading. Hides the latency entirely. (Not yet implemented.)
+5. **Multi-threaded WASM** — set COOP/COEP headers (impossible on GitHub Pages, trivial on a real
+   host) to speed inference. Note: inference isn't the bottleneck here, download is.
+6. **Pre-warm on load** — start the download in the background before the user clicks Ask.
+
+### Data
+- **Single conference, 8 hand-picked past talks.** No automated ingestion pipeline; videos are
+  curated by hand in `config/videos.json`.
+- **Uncorrected ASR errors** in transcripts (see above).
+- **No slides ingested** — the slide feature *generates* slides; it doesn't read real decks.
+
+### Retrieval & ranking
+- Hybrid lexical + a single bi-encoder embedding model; **no cross-encoder reranker**, no learned
+  fusion (weights are hand-tuned constants), no query rewriting/expansion, no typo tolerance.
+- **Chunking is naive** (sentence-merge to ~160 chars, no overlap, no semantic boundaries).
+- Short agenda-description talks are systematically out-ranked by long transcripts.
+
+### Evaluation
+- **18-question hand-labeled set.** No standard IR metrics (recall@k, MRR, nDCG), no held-out test
+  set, no regression suite on retrieval quality, no human relevance judgments.
+
+### Serving & ops
+- Fully static, **no backend** — which is why the model is shipped to the client.
+- No telemetry, no feedback loop, no A/B harness, no rate limiting, no auth, no monitoring/alerting.
+- ~42 MB of model/WASM committed to git (works, but not how you'd ship binaries in production).
+
+### Scope
+- One UI author's visual/UX pass; not accessibility-audited beyond basics.
+- No multi-turn conversation/memory; each question is independent.
+
+---
+
+## Future work (toward robust & accurate)
+
+**Accuracy & ranking**
+- Add a **cross-encoder reranker** over the top-k candidates (biggest precision lever).
+- **Learned fusion** (e.g. Reciprocal Rank Fusion) instead of hand-tuned lexical/semantic weights.
+- **Query understanding**: rewriting, expansion, typo correction, multi-intent splitting.
+- **Boost focused talks** over panels/keynotes/agenda-stubs with metadata-aware scoring.
+- Smarter **chunking** (overlapping windows, semantic boundaries, title/section context).
+
+**Data quality**
+- **ASR cleanup**: an offline punctuation/spelling-correction pass over auto-captions (e.g. an LLM
+  normalization step at build time), or source higher-quality transcripts.
+- **Automated ingestion** for any conference: discover the channel's talks, fetch, dedupe, embed.
+
+**Evaluation**
+- A real **eval harness**: a larger labeled set, recall@k / MRR / nDCG, regression gates in CI, and
+  ideally human relevance judgments.
+
+**Performance & serving**
+- Move the model to a **CDN** or a **server-side embedding endpoint**; progressive lexical-first
+  results; smaller/static embeddings; warm-on-load.
+
+**Product**
+- Multi-turn **conversational** follow-ups with context.
+- Per-answer **feedback** (thumbs up/down) feeding a relevance-tuning loop.
+- Timestamped **deep links** into the source video for each citation.
+
+---
 
 ## Tests
 
