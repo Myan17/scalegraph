@@ -64,9 +64,21 @@ ScaleGraph is config-driven. To target a new event:
 1. Edit **`config/agenda.json`** — event metadata + a `talks[]` array (title, speakers, company,
    track, description).
 2. *(Optional)* Add **`config/videos.json`** — past-talk entries `{ id, title, speakers, company,
-   year, url }`. Captions are pulled via [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) if installed;
-   if not, those talks degrade gracefully to title-only nodes.
+   url }`. Transcripts are pulled via [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) auto-captions and
+   the **real upload year is read from the source** (no need to hand-enter it). Talks without
+   captions degrade gracefully to title-only nodes.
 3. Run `npm run build:graph && npm run build`.
+
+This repo ships with **8 real past @Scale talks already wired in** (`config/videos.json`) — reliability,
+storage, distributed training, DC networks, and agentic-systems talks from 2025–2026. Their
+transcripts are cached in **`captions-cache/`** (committed), so `npm run build:graph` is fully
+**reproducible offline** — no `yt-dlp` or network required. These past talks are what power the
+cross-year **Timeline** and the dashed "evolves" links. To re-fetch fresh from YouTube:
+
+```bash
+yt-dlp --version || brew install yt-dlp     # yt-dlp must be on PATH
+SCALEGRAPH_REFRESH=1 npm run build:graph
+```
 
 Multiple years in the corpus is what powers the cross-year **Timeline** and the dashed "evolves"
 links in the graph.

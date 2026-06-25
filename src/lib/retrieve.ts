@@ -44,6 +44,7 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
   const weights = idf(chunks)
   const qSet = new Set(qTerms)
 
+  const matchedQueryTerms = new Set<string>()
   const scored: ScoredChunk[] = chunks.map((chunk) => {
     const terms = tokenize(chunk.text)
     let score = 0
@@ -51,6 +52,7 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
     for (const t of terms) {
       if (qSet.has(t) && !counted.has(t)) {
         counted.add(t)
+        matchedQueryTerms.add(t)
         score += weights.get(t) ?? 0
       }
     }
@@ -73,9 +75,12 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
   const nodes = graph.nodes.filter((n) => keep.has(n.id))
   const edges = graph.edges.filter((e) => keep.has(e.source) && keep.has(e.target))
 
-  // Confidence: normalize the top score against a soft ceiling.
+  // Confidence: combine absolute top-score strength with QUERY COVERAGE — the fraction of
+  // distinct query terms matched anywhere in the results. An off-topic query that only grazes
+  // one incidental word stays below the refusal threshold even if that word is locally strong.
   const top = rankedChunks[0]?.score ?? 0
-  const confidence = Math.min(1, top / 2.5)
+  const coverage = qSet.size ? matchedQueryTerms.size / qSet.size : 0
+  const confidence = Math.min(1, top / 2.5) * coverage
 
   return { rankedChunks, subgraph: { nodes, edges }, confidence }
 }

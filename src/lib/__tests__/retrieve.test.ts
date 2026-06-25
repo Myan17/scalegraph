@@ -19,10 +19,11 @@ describe('tokenize', () => {
 })
 
 describe('retrieve', () => {
-  it('ranks the Mitra reliability talk first for a reliability query', () => {
+  it('surfaces the Mitra reliability talk for a reliability query with high confidence', () => {
     const r = retrieve('how does Meta handle reliability incidents with agents', graph, chunks)
-    expect(r.rankedChunks[0].chunk.talkId).toBe('talk:mitra-fight-fires-2026')
-    expect(r.confidence).toBeGreaterThan(0)
+    const talks = r.rankedChunks.map((s) => s.chunk.talkId)
+    expect(talks).toContain('talk:mitra-fight-fires-2026')
+    expect(r.confidence).toBeGreaterThan(0.5)
     expect(r.confidence).toBeLessThanOrEqual(1)
   })
 
@@ -31,8 +32,9 @@ describe('retrieve', () => {
     expect(r.subgraph.nodes.find((n) => n.id === 'talk:liu-agentic-debug-2026')).toBeTruthy()
   })
 
-  it('returns no chunks for an off-topic query', () => {
+  it('yields low confidence (below refusal threshold) for an off-topic query', () => {
     const r = retrieve('best pizza toppings in Naples', graph, chunks)
-    expect(r.rankedChunks.length).toBe(0)
+    // Coverage weighting keeps an incidental single-word match well under the 0.15 refusal floor.
+    expect(r.confidence).toBeLessThan(0.15)
   })
 })

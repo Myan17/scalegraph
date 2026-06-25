@@ -9,10 +9,17 @@ import { Timeline } from './components/Timeline'
 
 const base = import.meta.env.BASE_URL
 
+const MODES: Mode[] = ['explore', 'ask', 'timeline']
+function modeFromHash(): Mode {
+  const h = (typeof location !== 'undefined' ? location.hash.replace('#', '') : '') as Mode
+  return MODES.includes(h) ? h : 'explore'
+}
+
 export default function App() {
   const [graph, setGraph] = useState<Graph | null>(null)
   const [chunks, setChunks] = useState<Chunk[]>([])
-  const [mode, setMode] = useState<Mode>('explore')
+  const [mode, setModeState] = useState<Mode>(modeFromHash())
+  const setMode = (m: Mode) => { setModeState(m); if (typeof location !== 'undefined') location.hash = m }
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [busy, setBusy] = useState(false)
   const [highlight, setHighlight] = useState<string[]>([])

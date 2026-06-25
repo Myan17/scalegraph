@@ -81,7 +81,7 @@ export function chunkText(talkId: string, text: string): Chunk[] {
   return chunks
 }
 
-export function extractTalk(talk: TalkInput, year: number): ExtractParts {
+export function extractTalk(talk: TalkInput, year?: number): ExtractParts {
   const nodes: GraphNode[] = []
   const edges: GraphEdge[] = []
   const hay = `${talk.title}. ${talk.description}`.toLowerCase()
@@ -105,22 +105,26 @@ export function extractTalk(talk: TalkInput, year: number): ExtractParts {
     edges.push({ source: talkNode.id, target: id, rel: 'from' })
   }
 
+  // Navigational sessions (welcome, panels, Q&A) get a node but never anchor themes/systems/metrics —
+  // their boilerplate ("...Systems & Reliability 2026...") would otherwise create spurious links.
+  const contentful = talk.type !== 'session' && talk.type !== 'panel'
+
   // Themes
-  for (const theme of matchLexicon(hay, THEMES)) {
+  if (contentful) for (const theme of matchLexicon(hay, THEMES)) {
     const id = `theme:${slug(theme)}`
     nodes.push(node(id, 'Theme', theme))
     edges.push({ source: talkNode.id, target: id, rel: 'about' })
   }
 
   // Systems / technologies
-  for (const sys of matchLexicon(hay, SYSTEMS)) {
+  if (contentful) for (const sys of matchLexicon(hay, SYSTEMS)) {
     const id = `system:${slug(sys)}`
     nodes.push(node(id, 'System', sys))
     edges.push({ source: talkNode.id, target: id, rel: 'uses' })
   }
 
   // Metrics
-  const metrics = talk.description.match(METRIC_RE) ?? []
+  const metrics = contentful ? (talk.description.match(METRIC_RE) ?? []) : []
   for (const m of metrics) {
     const clean = m.trim()
     const id = `metric:${slug(talk.id)}:${slug(clean)}`
