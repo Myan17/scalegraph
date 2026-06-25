@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseVtt, fetchCaptions, yearFromUploadDate } from '../fetchCaptions'
+import { parseJson3, fetchCaptions, yearFromUploadDate } from '../fetchCaptions'
 
 describe('yearFromUploadDate', () => {
   it('extracts the year from a YYYYMMDD string', () => {
@@ -11,19 +11,23 @@ describe('yearFromUploadDate', () => {
   })
 })
 
-describe('parseVtt', () => {
-  it('extracts cues with timestamps', () => {
-    const vtt = `WEBVTT
-
-00:00:01.000 --> 00:00:04.000
-Hello and welcome
-
-00:01:05.500 --> 00:01:08.000
-to the talk`
-    const cues = parseVtt(vtt)
+describe('parseJson3', () => {
+  it('extracts clean cues with timestamps and no rolling duplication', () => {
+    const json3 = JSON.stringify({
+      events: [
+        { tStartMs: 1000, segs: [{ utf8: 'Hello' }, { utf8: ' and welcome' }] },
+        { tStartMs: 65500, segs: [{ utf8: 'to the talk' }] },
+        { tStartMs: 70000, segs: [{ utf8: '\n' }] }, // whitespace-only event is dropped
+      ],
+    })
+    const cues = parseJson3(json3)
     expect(cues).toHaveLength(2)
     expect(cues[0]).toEqual({ ts: 1, text: 'Hello and welcome' })
     expect(cues[1].ts).toBe(65)
+  })
+
+  it('returns [] for malformed input without throwing', () => {
+    expect(parseJson3('not json')).toEqual([])
   })
 })
 

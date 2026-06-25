@@ -27,35 +27,24 @@ export function yearFromUploadDate(s: string | undefined): number | undefined {
   return m ? Number(m[1]) : undefined
 }
 
-/** Parse WebVTT into cues with start timestamps in seconds. */
-export function parseVtt(vtt: string): { ts: number; text: string }[] {
+/**
+ * Parse YouTube `json3` auto-captions into clean cues with start timestamps (seconds).
+ *
+ * We use json3 rather than VTT on purpose: VTT auto-captions "roll" — every phrase is emitted
+ * twice and overlapping cues concatenate into garbled, duplicated text ("...at MTA. And I'm a
+ * network engineer at MTA..."). json3 gives one clean segment per event, so the transcript reads
+ * naturally. Each event has `tStartMs` and `segs[].utf8`.
+ */
+export function parseJson3(raw: string): { ts: number; text: string }[] {
+  let data: { events?: { tStartMs?: number; segs?: { utf8?: string }[] }[] }
+  try { data = JSON.parse(raw) } catch { return [] }
   const cues: { ts: number; text: string }[] = []
-  const blocks = vtt.split(/\r?\n\r?\n/)
-  const timeRe = /(\d{2}):(\d{2}):(\d{2})[.,](\d{3})\s*-->/
-  for (const b of blocks) {
-    const m = b.match(timeRe)
-    if (!m) continue
-    const ts = +m[1] * 3600 + +m[2] * 60 + +m[3]
-    const text = b
-      .split(/\r?\n/)
-      .filter((l) => !timeRe.test(l) && !/^WEBVTT/.test(l) && l.trim())
-      .join(' ')
-      .replace(/<[^>]+>/g, '')
-      .trim()
-    if (text) cues.push({ ts, text })
+  for (const e of data.events ?? []) {
+    if (!e.segs) continue
+    const text = e.segs.map((s) => s.utf8 ?? '').join('').replace(/\s+/g, ' ').trim()
+    if (text) cues.push({ ts: Math.floor((e.tStartMs ?? 0) / 1000), text })
   }
-  // YouTube auto-captions roll: each line is emitted twice (timed + plain) and overlaps the next.
-  // Drop consecutive cues whose text repeats or is a prefix of the previous, to de-noise.
-  const deduped: { ts: number; text: string }[] = []
-  for (const c of cues) {
-    const prev = deduped[deduped.length - 1]
-    if (prev && (prev.text === c.text || prev.text.endsWith(c.text) || c.text.startsWith(prev.text))) {
-      if (c.text.length > prev.text.length) prev.text = c.text // keep the longer/fuller line
-      continue
-    }
-    deduped.push({ ...c })
-  }
-  return deduped
+  return cues
 }
 
 export async function fetchCaptions(url: string): Promise<Captions> {
@@ -65,17 +54,18 @@ export async function fetchCaptions(url: string): Promise<Captions> {
     // One call: write English auto-subs AND print the upload_date to stdout.
     const { stdout } = await exec('yt-dlp', [
       '--write-auto-subs', '--sub-lang', 'en', '--skip-download', '--no-simulate',
-      '--sub-format', 'vtt', '--print', '%(upload_date)s',
+      '--sub-format', 'json3', '--print', '%(upload_date)s',
       '-o', join(dir, '%(id)s.%(ext)s'), '--', url,
     ], { timeout: 90_000 })
     const year = yearFromUploadDate(stdout)
     const files = await readdir(dir)
-    const vttFile = files.find((f) => f.endsWith('.vtt'))
-    if (!vttFile) return { ...EMPTY, year }
-    const vtt = await readFile(join(dir, vttFile), 'utf8')
-    const cues = parseVtt(vtt)
+    const subFile = files.find((f) => f.endsWith('.json3'))
+    if (!subFile) return { ...EMPTY, year }
+    const raw = await readFile(join(dir, subFile), 'utf8')
+    const cues = parseJson3(raw)
     if (!cues.length) return { ...EMPTY, year }
-    return { text: cues.map((c) => c.text).join(' '), available: true, cues, year }
+    const text = cues.map((c) => c.text).join(' ').replace(/\s+/g, ' ').trim()
+    return { text, available: true, cues, year }
   } catch {
     return EMPTY // yt-dlp missing, network error, no captions, timeout — all degrade silently
   } finally {

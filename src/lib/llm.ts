@@ -5,9 +5,24 @@
 import type { Claim } from '../types'
 
 const MODEL = 'claude-sonnet-4-6' // cost-efficient; swap to claude-opus-4-8 for max quality
+const LS_KEY = 'scalegraph.anthropicKey'
+
+/** Resolve the API key: runtime localStorage (bring-your-own-key) takes precedence over the
+ *  build-time env var. Keys live only in the user's browser and are never committed. */
+export function getApiKey(): string {
+  try {
+    const ls = typeof localStorage !== 'undefined' ? localStorage.getItem(LS_KEY) : null
+    if (ls) return ls
+  } catch { /* localStorage blocked */ }
+  return (import.meta?.env?.VITE_ANTHROPIC_API_KEY as string) ?? ''
+}
+
+export function setApiKey(key: string): void {
+  try { key ? localStorage.setItem(LS_KEY, key) : localStorage.removeItem(LS_KEY) } catch { /* ignore */ }
+}
 
 export function isEnabled(): boolean {
-  return Boolean(import.meta?.env?.VITE_ANTHROPIC_API_KEY)
+  return Boolean(getApiKey())
 }
 
 export interface SynthContext {
@@ -59,6 +74,53 @@ export async function synthesize(
     // Enforce 1:1 alignment; if the model returned the wrong count, reject (keep extractive).
     if (parsed.claims.length !== contexts.length) return null
     return { title: parsed.title, claimTexts: parsed.claims.map(String) }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Conversational, grounded synthesis for the chat agent. Given the conversation history and the
+ * retrieved snippets, produce a natural multi-turn reply that uses ONLY the snippets. Returns a
+ * plain string, or null on any error (caller keeps the templated grounded reply). Citations are
+ * shown separately as evidence, so this text never carries the grounding burden alone.
+ */
+export async function chatSynthesize(
+  history: { role: 'user' | 'assistant'; text: string }[],
+  message: string,
+  contexts: SynthContext[],
+): Promise<string | null> {
+  if (!isEnabled()) return null
+  try {
+    const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string
+    const system =
+      'You are ScaleGraph, a conversational assistant for the @Scale conference. Answer ONLY from the ' +
+      'provided talk snippets — never add facts not present in them, and never invent talks or speakers. ' +
+      'Be concise, natural, and conversational (2-4 sentences). Refer to talks by name when relevant. ' +
+      'If the snippets do not address the question, say so plainly.'
+    const convo = history.slice(-6).map((t) => `${t.role === 'user' ? 'User' : 'Assistant'}: ${t.text}`).join('\n')
+    const snippets = contexts.map((c, i) => `[${i}] (${c.talkLabel}) ${c.text}`).join('\n')
+    const user = `${convo ? convo + '\n' : ''}User: ${message}\n\nSnippets you may use:\n${snippets}`
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 512,
+        system,
+        messages: [{ role: 'user', content: user }],
+      }),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    const text: string = data?.content?.[0]?.text ?? ''
+    return text.trim() || null
   } catch {
     return null
   }
