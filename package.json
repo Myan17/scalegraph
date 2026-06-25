@@ -1,0 +1,35 @@
+{
+  "name": "scalegraph",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "An agentic knowledge-graph companion for the @Scale conference series.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "build:graph": "tsx scripts/buildGraph.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "d3-force": "^3.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.0.1",
+    "@types/d3-force": "^3.0.10",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "html-to-image": "^1.11.11",
+    "jsdom": "^25.0.1",
+    "pptxgenjs": "^3.12.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

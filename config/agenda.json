@@ -1,0 +1,155 @@
+{
+  "event": { "name": "Systems & Reliability", "series": "@Scale", "year": 2026, "location": "Meydenbauer Center, Bellevue, WA", "date": "2026-06-25" },
+  "talks": [
+    {
+      "id": "welcome-2026",
+      "title": "Event Welcome",
+      "speakers": [],
+      "company": "Meta",
+      "track": "Plenary",
+      "time": "9:55",
+      "type": "session",
+      "description": "Opening of the @Scale Systems & Reliability 2026 conference."
+    },
+    {
+      "id": "biswas-keynote-2026",
+      "title": "Keynote from Meta",
+      "speakers": ["Surupa Biswas"],
+      "company": "Meta",
+      "track": "Plenary",
+      "time": "10:00",
+      "type": "keynote",
+      "description": "Vice President of Engineering for Core Infrastructure at Meta presents the latest progress on infrastructure for AI through agentic innovation, spanning custom silicon, networking fabrics, and AI-driven system management."
+    },
+    {
+      "id": "pariag-agents-2026",
+      "title": "Our Journey to Safely Unleash Agents at Meta Scale",
+      "speakers": ["David Pariag"],
+      "company": "Meta",
+      "track": "Plenary",
+      "time": "10:25",
+      "type": "talk",
+      "description": "Explores enabling agentic access to Meta systems safely, covering internal agents, third-party agent deployment, and the guardrails required to prevent destructive actions while granting agents real capability."
+    },
+    {
+      "id": "duffy-agentic-gap-2026",
+      "title": "The Agentic Infrastructure Gap: In-Distribution Languages Make It a Coding Problem",
+      "speakers": ["Joe Duffy"],
+      "company": "Pulumi",
+      "track": "Plenary",
+      "time": "10:45",
+      "type": "talk",
+      "description": "Argues that LLMs can manage infrastructure through general-purpose programming languages rather than bespoke DSLs, and discusses reliably mapping code changes to infrastructure outcomes."
+    },
+    {
+      "id": "extending-public-cloud-2026",
+      "title": "Extending Meta to the Public Cloud",
+      "speakers": ["Dinesh Govindasamy", "Sargun Dhillon"],
+      "company": "Meta",
+      "track": "Plenary",
+      "time": "11:05",
+      "type": "talk",
+      "description": "Details Meta's integration of public cloud resources with internal infrastructure, focusing on multi-cloud optionality, GPU capacity management, and fleet management across environments."
+    },
+    {
+      "id": "morning-qa-2026",
+      "title": "Live Q&A",
+      "speakers": ["David Pariag", "Sargun Dhillon", "Dinesh Govindasamy", "Joe Duffy"],
+      "company": "Meta",
+      "track": "Plenary",
+      "time": "11:25",
+      "type": "panel",
+      "description": "Live audience Q&A on safely unleashing agents, agentic infrastructure, and extending Meta to the public cloud."
+    },
+    {
+      "id": "mitra-fight-fires-2026",
+      "title": "Teaching AI to Fight Fires: Autonomous Reliability Agents at Meta Scale",
+      "speakers": ["Gaurav Mitra"],
+      "company": "Meta",
+      "track": "Track 1",
+      "time": "13:10",
+      "type": "talk",
+      "description": "Describes a reliability flywheel that encodes on-call engineer investigation methods into an autonomous agent. The agent handled 1,000+ incidents with a 60% improvement in detection-to-mitigation time and matched senior engineer performance roughly 80% of the time, covering pattern identification, autonomous investigation, supervised mitigation, and self-healing goals."
+    },
+    {
+      "id": "nvidia-gb200-2026",
+      "title": "Experience Productionizing and Operating GB200 Clusters",
+      "speakers": ["Ankur Srivastava", "Sachin Kumar Lakharia", "Douglas Wightman"],
+      "company": "NVIDIA",
+      "track": "Track 1",
+      "time": "13:45",
+      "type": "talk",
+      "description": "Covers the NVIDIA GB200 NVL72 system, an exascale computer within a single rack, including topology-aware scheduling, GPU occupancy optimization, and cluster operations at scale."
+    },
+    {
+      "id": "kirti-privacy-2026",
+      "title": "Building Privacy Aware Infrastructure in the AI-Native Era",
+      "speakers": ["Rituraj Kirti"],
+      "company": "Meta",
+      "track": "Track 1",
+      "time": "14:15",
+      "type": "talk",
+      "description": "Presents an AI-native asset classification approach combining deterministic rules with an LLM fallback, discussing ground-truth improvement loops, active learning, LLM-as-Judge evaluation, and distilling LLM behavior into auditable rules."
+    },
+    {
+      "id": "storage-blueprint-2026",
+      "title": "AI Storage Blueprint",
+      "speakers": ["Sidharth Bajaj", "Venkatraghavan Srinivasa"],
+      "company": "Meta",
+      "track": "Track 1",
+      "time": "14:50",
+      "type": "talk",
+      "description": "Details the evolution of Meta's storage architecture to optimize GPU utilization and research velocity, addressing rapid growth in model capabilities and dataset sizes."
+    },
+    {
+      "id": "afternoon-panel-2026",
+      "title": "Live Panel",
+      "speakers": [],
+      "company": "Meta",
+      "track": "Track 1",
+      "time": "15:15",
+      "type": "panel",
+      "description": "Live panel discussion on systems and reliability for AI infrastructure."
+    },
+    {
+      "id": "hoose-keynote-2026",
+      "title": "Keynote from Meta",
+      "speakers": ["Peter Hoose"],
+      "company": "Meta",
+      "track": "Track 1",
+      "time": "15:40",
+      "type": "keynote",
+      "description": "Meta's Head of Production Engineering presents on infrastructure for AI through agentic innovation and the future of autonomous reliability."
+    },
+    {
+      "id": "stop-the-world-2026",
+      "title": "[Almost] Fail & Tell: Stop The World",
+      "speakers": ["Phil Lopreiato", "Rahul Iyengar"],
+      "company": "Meta",
+      "track": "Track 2",
+      "time": "13:10",
+      "type": "talk",
+      "description": "Documents a March 2025 incident where Meta avoided a major outage by re-bootstrapping the infrastructure control plane in an entire region within minutes using emergency tooling."
+    },
+    {
+      "id": "ms-secure-debug-2026",
+      "title": "Securing Production Debugging at Hyperscale",
+      "speakers": ["Shridivya Sharma", "Luke Kelly"],
+      "company": "Microsoft",
+      "track": "Track 2",
+      "time": "13:45",
+      "type": "talk",
+      "description": "Examines Microsoft's SSH debugging across global Kubernetes cluster fleets, integrating just-in-time elevations and task-based execution with AI and Semantic Kernel for on-call problem resolution."
+    },
+    {
+      "id": "liu-agentic-debug-2026",
+      "title": "Taming AI Infrastructure Failures with Agentic Debugging",
+      "speakers": ["Phillip Liu"],
+      "company": "Meta",
+      "track": "Track 2",
+      "time": "14:15",
+      "type": "talk",
+      "description": "Addresses NCCL watchdog timeouts in distributed training, describing investigation across Meta's recommendation systems, categorization of root causes, and agent-based debugging approaches."
+    }
+  ]
+}

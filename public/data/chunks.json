@@ -1,0 +1,82 @@
+[
+  {
+    "id": "talk:welcome-2026::c0",
+    "talkId": "talk:welcome-2026",
+    "text": "Opening of the @Scale Systems & Reliability 2026 conference."
+  },
+  {
+    "id": "talk:biswas-keynote-2026::c0",
+    "talkId": "talk:biswas-keynote-2026",
+    "text": "Vice President of Engineering for Core Infrastructure at Meta presents the latest progress on infrastructure for AI through agentic innovation, spanning custom silicon, networking fabrics, and AI-driven system management."
+  },
+  {
+    "id": "talk:pariag-agents-2026::c0",
+    "talkId": "talk:pariag-agents-2026",
+    "text": "Explores enabling agentic access to Meta systems safely, covering internal agents, third-party agent deployment, and the guardrails required to prevent destructive actions while granting agents real capability."
+  },
+  {
+    "id": "talk:duffy-agentic-gap-2026::c0",
+    "talkId": "talk:duffy-agentic-gap-2026",
+    "text": "Argues that LLMs can manage infrastructure through general-purpose programming languages rather than bespoke DSLs, and discusses reliably mapping code changes to infrastructure outcomes."
+  },
+  {
+    "id": "talk:extending-public-cloud-2026::c0",
+    "talkId": "talk:extending-public-cloud-2026",
+    "text": "Details Meta's integration of public cloud resources with internal infrastructure, focusing on multi-cloud optionality, GPU capacity management, and fleet management across environments."
+  },
+  {
+    "id": "talk:morning-qa-2026::c0",
+    "talkId": "talk:morning-qa-2026",
+    "text": "Live audience Q&A on safely unleashing agents, agentic infrastructure, and extending Meta to the public cloud."
+  },
+  {
+    "id": "talk:mitra-fight-fires-2026::c0",
+    "talkId": "talk:mitra-fight-fires-2026",
+    "text": "Describes a reliability flywheel that encodes on-call engineer investigation methods into an autonomous agent."
+  },
+  {
+    "id": "talk:mitra-fight-fires-2026::c1",
+    "talkId": "talk:mitra-fight-fires-2026",
+    "text": "The agent handled 1,000+ incidents with a 60% improvement in detection-to-mitigation time and matched senior engineer performance roughly 80% of the time, covering pattern identification, autonomous investigation, supervised mitigation, and self-healing goals."
+  },
+  {
+    "id": "talk:nvidia-gb200-2026::c0",
+    "talkId": "talk:nvidia-gb200-2026",
+    "text": "Covers the NVIDIA GB200 NVL72 system, an exascale computer within a single rack, including topology-aware scheduling, GPU occupancy optimization, and cluster operations at scale."
+  },
+  {
+    "id": "talk:kirti-privacy-2026::c0",
+    "talkId": "talk:kirti-privacy-2026",
+    "text": "Presents an AI-native asset classification approach combining deterministic rules with an LLM fallback, discussing ground-truth improvement loops, active learning, LLM-as-Judge evaluation, and distilling LLM behavior into auditable rules."
+  },
+  {
+    "id": "talk:storage-blueprint-2026::c0",
+    "talkId": "talk:storage-blueprint-2026",
+    "text": "Details the evolution of Meta's storage architecture to optimize GPU utilization and research velocity, addressing rapid growth in model capabilities and dataset sizes."
+  },
+  {
+    "id": "talk:afternoon-panel-2026::c0",
+    "talkId": "talk:afternoon-panel-2026",
+    "text": "Live panel discussion on systems and reliability for AI infrastructure."
+  },
+  {
+    "id": "talk:hoose-keynote-2026::c0",
+    "talkId": "talk:hoose-keynote-2026",
+    "text": "Meta's Head of Production Engineering presents on infrastructure for AI through agentic innovation and the future of autonomous reliability."
+  },
+  {
+    "id": "talk:stop-the-world-2026::c0",
+    "talkId": "talk:stop-the-world-2026",
+    "text": "Documents a March 2025 incident where Meta avoided a major outage by re-bootstrapping the infrastructure control plane in an entire region within minutes using emergency tooling."
+  },
+  {
+    "id": "talk:ms-secure-debug-2026::c0",
+    "talkId": "talk:ms-secure-debug-2026",
+    "text": "Examines Microsoft's SSH debugging across global Kubernetes cluster fleets, integrating just-in-time elevations and task-based execution with AI and Semantic Kernel for on-call problem resolution."
+  },
+  {
+    "id": "talk:liu-agentic-debug-2026::c0",
+    "talkId": "talk:liu-agentic-debug-2026",
+    "text": "Addresses NCCL watchdog timeouts in distributed training, describing investigation across Meta's recommendation systems, categorization of root causes, and agent-based debugging approaches."
+  }
+]
