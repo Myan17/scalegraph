@@ -41,9 +41,20 @@ describe('extractTalk', () => {
 })
 
 describe('chunkText', () => {
-  it('keeps chunks under 280 chars', () => {
+  it('keeps chunks within a soft size cap', () => {
     const long = 'A sentence. '.repeat(60)
-    for (const c of chunkText('t', long)) expect(c.text.length).toBeLessThanOrEqual(280)
+    for (const c of chunkText('t', long)) expect(c.text.length).toBeLessThanOrEqual(340)
+  })
+
+  it('merges short filler sentences instead of emitting them alone', () => {
+    const text =
+      'This is a reasonably long opening sentence that comfortably clears the target chunk length on its own and then some. ' +
+      'Short note. ' +
+      'Another sufficiently long sentence follows here to make a second chunk of acceptable length for retrieval purposes.'
+    const chunks = chunkText('t', text)
+    // No chunk should be a tiny orphan fragment.
+    for (const c of chunks) expect(c.text.length).toBeGreaterThanOrEqual(40)
+    expect(chunks.some((c) => c.text.includes('Short note.'))).toBe(true)
   })
 })
 
