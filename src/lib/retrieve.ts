@@ -39,10 +39,21 @@ function idf(chunks: Chunk[]): Map<string, number> {
   return out
 }
 
+// Session-type weighting: panels/Q&A enumerate many topics and are keyword-dense, so they
+// out-rank the focused deep-dive talk that actually answers the question. Down-weight them
+// (and keynotes mildly) so the substantive talk wins.
+const TYPE_WEIGHT: Record<string, number> = { panel: 0.35, session: 0.35, keynote: 0.7 }
+
+function talkTypeWeight(graph: Graph, talkId: string): number {
+  const t = graph.nodes.find((n) => n.id === talkId)?.meta?.type as string | undefined
+  return (t && TYPE_WEIGHT[t]) ?? 1
+}
+
 export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): Retrieval {
   const qTerms = tokenize(query)
   const weights = idf(chunks)
   const qSet = new Set(qTerms)
+  const typeWeightCache = new Map<string, number>()
 
   const matchedQueryTerms = new Set<string>()
   const scored: ScoredChunk[] = chunks.map((chunk) => {
@@ -56,8 +67,10 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
         score += weights.get(t) ?? 0
       }
     }
-    // length-normalize so long chunks don't dominate
-    return { chunk, score: score / Math.sqrt(terms.length || 1) }
+    // length-normalize so long chunks don't dominate, then apply session-type weighting
+    let tw = typeWeightCache.get(chunk.talkId)
+    if (tw === undefined) { tw = talkTypeWeight(graph, chunk.talkId); typeWeightCache.set(chunk.talkId, tw) }
+    return { chunk, score: (score / Math.sqrt(terms.length || 1)) * tw }
   })
 
   const rankedChunks = scored
