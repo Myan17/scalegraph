@@ -46,17 +46,31 @@ const TYPE_WEIGHT: Record<string, number> = { panel: 0.35, session: 0.35, keynot
 
 function talkTypeWeight(graph: Graph, talkId: string): number {
   const t = graph.nodes.find((n) => n.id === talkId)?.meta?.type as string | undefined
-  return (t && TYPE_WEIGHT[t]) ?? 1
+  return t ? (TYPE_WEIGHT[t] ?? 1) : 1
 }
 
-export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): Retrieval {
+export interface RetrieveOpts {
+  k?: number
+  /** Optional semantic (cosine) scores per chunk id — enables hybrid lexical+semantic ranking. */
+  semantic?: Map<string, number>
+}
+
+// Hybrid blend weights when semantic scores are available. Semantic leads (handles paraphrase);
+// lexical is a precision boost for exact keyword/entity matches.
+const W_SEM = 0.7
+const W_LEX = 0.3
+
+export function retrieve(query: string, graph: Graph, chunks: Chunk[], opts: RetrieveOpts = {}): Retrieval {
+  const k = opts.k ?? 6
+  const semantic = opts.semantic
   const qTerms = tokenize(query)
   const weights = idf(chunks)
   const qSet = new Set(qTerms)
   const typeWeightCache = new Map<string, number>()
 
   const matchedQueryTerms = new Set<string>()
-  const scored: ScoredChunk[] = chunks.map((chunk) => {
+  // First pass: raw lexical score per chunk (length-normalized, no type weight yet).
+  const lex: { chunk: Chunk; lexRaw: number; tw: number }[] = chunks.map((chunk) => {
     const terms = tokenize(chunk.text)
     let score = 0
     const counted = new Set<string>()
@@ -67,14 +81,26 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
         score += weights.get(t) ?? 0
       }
     }
-    // length-normalize so long chunks don't dominate, then apply session-type weighting
     let tw = typeWeightCache.get(chunk.talkId)
     if (tw === undefined) { tw = talkTypeWeight(graph, chunk.talkId); typeWeightCache.set(chunk.talkId, tw) }
-    return { chunk, score: (score / Math.sqrt(terms.length || 1)) * tw }
+    return { chunk, lexRaw: score / Math.sqrt(terms.length || 1), tw }
+  })
+
+  const maxLex = Math.max(1e-9, ...lex.map((l) => l.lexRaw))
+  const scored: ScoredChunk[] = lex.map(({ chunk, lexRaw, tw }) => {
+    const lexNorm = lexRaw / maxLex
+    let blended: number
+    if (semantic) {
+      const sem = Math.max(0, semantic.get(chunk.id) ?? 0) // cosine, clamp negatives
+      blended = W_SEM * sem + W_LEX * lexNorm
+    } else {
+      blended = lexNorm
+    }
+    return { chunk, score: blended * tw }
   })
 
   const rankedChunks = scored
-    .filter((s) => s.score > 0)
+    .filter((s) => s.score > 0.01)
     .sort((a, b) => b.score - a.score)
     .slice(0, k)
 
@@ -88,12 +114,25 @@ export function retrieve(query: string, graph: Graph, chunks: Chunk[], k = 6): R
   const nodes = graph.nodes.filter((n) => keep.has(n.id))
   const edges = graph.edges.filter((e) => keep.has(e.source) && keep.has(e.target))
 
-  // Confidence: combine absolute top-score strength with QUERY COVERAGE — the fraction of
-  // distinct query terms matched anywhere in the results. An off-topic query that only grazes
-  // one incidental word stays below the refusal threshold even if that word is locally strong.
-  const top = rankedChunks[0]?.score ?? 0
+  // Confidence / refusal gate.
+  // Lexical mode: absolute top strength × query coverage — an off-topic query that only grazes one
+  // incidental word stays below the refusal threshold even if that word is locally strong.
   const coverage = qSet.size ? matchedQueryTerms.size / qSet.size : 0
-  const confidence = Math.min(1, top / 2.5) * coverage
+  const topLexRaw = Math.max(0, ...lex.map((l) => l.lexRaw))
+  const lexConfidence = Math.min(1, topLexRaw / 2.5) * coverage
+
+  let confidence = lexConfidence
+  if (semantic) {
+    // Hybrid refusal gate: SEMANTIC decides. Measured separation is clean — off-topic queries
+    // top out at cos ≈0.25, on-topic floor at ≈0.40 — so cosine reliably tells real from junk.
+    // A query like "who won the world cup" grazes common words lexically but has near-zero
+    // cosine, so it refuses. Lexical only RESCUES a fully-covered exact-entity query (e.g.
+    // "GB200 NVL72") where every query term matched — that's a real hit even if cosine is modest.
+    const topSem = Math.max(0, ...lex.map((l) => semantic.get(l.chunk.id) ?? 0))
+    const semConfidence = Math.max(0, Math.min(1, (topSem - 0.22) / 0.35)) // cos 0.22→0, 0.57→1
+    const exactRescue = coverage >= 0.99 ? lexConfidence : 0
+    confidence = Math.max(semConfidence, exactRescue)
+  }
 
   return { rankedChunks, subgraph: { nodes, edges }, confidence }
 }
