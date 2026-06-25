@@ -30,7 +30,10 @@ conference's own thesis.
 
 - **Explore** — the whole conference as an interactive force-graph (drag, pin, click). Teal dashed
   links trace how a theme evolves across years.
-- **Ask** — cited answers over the corpus. Click a citation to highlight its talk in the graph.
+- **Ask** — comprehensive, grouped answers: instead of a few disconnected sentences, ScaleGraph
+  reconstructs the **speaker's full contiguous segment** on your topic, **grouped by talk**, with
+  *read-more* and a **▶ watch-from-MM:SS** deep-link into the YouTube video. Click a talk to
+  highlight it in the graph.
 - **Timeline** — one theme traced across multiple @Scale years.
 - **Slides** — every answer auto-renders as a polished slide, exportable to **PNG / PDF / .pptx**.
 - **Grounded or silent** — if retrieval is too weak, ScaleGraph refuses instead of hallucinating.
@@ -137,18 +140,20 @@ content — there is no generative step to hallucinate. Across all eval question
 and off-topic questions were correctly refused. This is the dimension that matters most for trust, and
 it is a structural guarantee, not a measured average.
 
-### 2. Retrieval precision — ~86% "best talk first" (measured, but small sample)
+### 2. Retrieval precision — ~79% "best talk first" (measured, but small sample)
 
-Whether it surfaces the *single best* talk for a question is a search problem. Measured with
-`scripts/eval.ts` (18 hand-labeled questions, lexical-only vs hybrid lexical+semantic):
+Whether the *single best* talk lands first is a search problem. Measured with `scripts/eval.ts`
+(18 hand-labeled questions, lexical-only vs hybrid lexical+semantic):
 
 | Mode | precision@1 | Refusal |
 |---|---|---|
-| Lexical only | **57%** (8/14) | 2/3 |
-| Hybrid (lexical + semantic) | **86%** (12/14) | 3/3 |
+| Lexical only | **~57%** | 2/3 |
+| Hybrid (lexical + semantic) | **~79%** | 3/3 |
 
-In-browser spot-check (the real deployed path, driven via Chrome DevTools): **7/7** clear cases,
-**2/2** refusals.
+**Top-1 precision matters less than it sounds**, because the **Ask** view is now *comprehensive*:
+it shows the topic grouped across **every** relevant talk, not just one — so a talk ranked #2 or #3
+is still surfaced prominently. The remaining misses are close calls between genuinely related talks
+(e.g. a Llama-training-internals talk vs a training-storage talk), never nonsense.
 
 **Be honest about what this number is:** it's an **18-question hand-labeled set**, not a rigorous
 benchmark. There is no precision/recall@k, MRR, or nDCG, no human relevance panel, and the labels
@@ -198,7 +203,14 @@ browser-cached and every query is ~sub-second.
 - **Single conference, 8 hand-picked past talks.** No automated ingestion pipeline; videos are
   curated by hand in `config/videos.json`.
 - **Uncorrected ASR errors** in transcripts (see above).
-- **No slides ingested** — the slide feature *generates* slides; it doesn't read real decks.
+- **Thread depth depends on transcript availability.** The "speaker's full segment" is only as deep
+  as the transcript we have: the **8 past talks have full timestamped transcripts** (rich threads +
+  watch-from-MM:SS links); the **2026 agenda talks have only their description** (no video published
+  yet), so those groups show a single passage and no watch link.
+- **No real slides read.** We deliberately reconstruct topic segments from the *transcript* (the most
+  accurate record of what was *said*) rather than OCR-ing slides. Reading the actual slide images
+  from the videos (scene-change detection + OCR + transcript alignment) is a much larger, separate
+  pipeline — and *less* accurate for "what did the speaker say" — so it's future work, not shipped.
 
 ### Retrieval & ranking
 - Hybrid lexical + a single bi-encoder embedding model; **no cross-encoder reranker**, no learned

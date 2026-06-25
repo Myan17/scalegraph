@@ -7,7 +7,7 @@
 // where the keyword never reappears — and stop when the speaker moves on.
 
 import type { Graph, Chunk, GraphNode, Segment, TalkThread } from '../types'
-import { scoreChunks, type ScoredItem } from './retrieve'
+import { scoreChunks, tokenize, type ScoredItem } from './retrieve'
 
 export interface SegmentResult {
   groups: TalkThread[]
@@ -39,6 +39,7 @@ export function buildSegments(
   semantic?: Map<string, number>,
 ): SegmentResult {
   const { items } = scoreChunks(query, graph, chunks, semantic)
+  const qTokens = new Set(tokenize(query))
 
   // Group scored chunks by talk, ordered by transcript position.
   const byTalk = new Map<string, ScoredItem[]>()
@@ -90,11 +91,13 @@ export function buildSegments(
     })
     segments.sort((a, b) => b.score - a.score)
 
-    // Rank by PEAK relevance (most on-topic moment) × talk-type weight, with a small bonus for
-    // sustained discussion — so the talk actually about the topic leads, not whichever has the most
-    // chunks, and keynotes are gently demoted vs focused talks.
-    const peak = Math.max(...seeds.map((s) => s.sem))
-    const score = peak * (seeds[0].tw ?? 1) + Math.min(0.1, 0.01 * seeds.length)
+    // Rank talks by peak BLENDED score (sem+lex × type weight) plus a TITLE-MATCH boost: the talk
+    // title is the strongest topic signal (e.g. "Scaling Llama4 Training" for a Llama query), and
+    // transcript chunks no longer carry the title, so match the query against the label directly.
+    const titleTokens = tokenize(node?.label ?? '')
+    const titleHits = titleTokens.filter((t) => qTokens.has(t)).length
+    const titleBoost = qTokens.size ? 0.5 * (titleHits / Math.max(1, titleTokens.length)) + 0.3 * (titleHits / qTokens.size) : 0
+    const score = Math.max(...seeds.map((s) => s.score)) + titleBoost
     groups.push({
       talkId,
       label: node?.label ?? talkId,
