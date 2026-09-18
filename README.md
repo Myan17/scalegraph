@@ -7,6 +7,11 @@
 Ask anything about the program and the back-catalog → get a **cited** answer → and a **shareable slide**.
 Stop photographing the stage.
 
+[![CI](https://github.com/Myan17/scalegraph/actions/workflows/ci.yml/badge.svg)](https://github.com/Myan17/scalegraph/actions/workflows/ci.yml)
+[![Pages](https://github.com/Myan17/scalegraph/actions/workflows/pages.yml/badge.svg)](https://github.com/Myan17/scalegraph/actions/workflows/pages.yml)
+
+**[Live demo](https://myan17.github.io/scalegraph/)** · **[Benchmarks](BENCHMARKS.md)** — hybrid retrieval 79% precision@1, 3/3 refusal · 42 tests
+
 </div>
 
 ---
